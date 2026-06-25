@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<div class="page-title">📊 Dashboard</div>
+<div class="page-sub">Connection status, queue overview, quick actions</div>
+
+<div class="g4" style="margin-bottom: 18px">
+  <div class="stat blue">
+    <div class="stat-n c-blue" id="s-total">{{ stats.total }}</div>
+    <div class="stat-l">Total in Queue</div>
+  </div>
+  <div class="stat amber">
+    <div class="stat-n c-amber" id="s-pending">{{ stats.pending }}</div>
+    <div class="stat-l">Pending</div>
+  </div>
+  <div class="stat green">
+    <div class="stat-n c-green" id="s-posted">{{ stats.posted }}</div>
+    <div class="stat-l">Posted</div>
+  </div>
+  <div class="stat purple">
+    <div class="stat-n c-rose" id="s-failed">{{ stats.failed }}</div>
+    <div class="stat-l">Failed</div>
+  </div>
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="card-h">
+      <div class="card-t">🔌 Provider Connections</div>
+      <button class="btn btn-ghost btn-sm" onclick="checkProviders()">🔄 Live Check</button>
+    </div>
+    <div class="card-b" id="providers-box">
+      <div class="placeholder">Click "Live Check" to ping AI providers (Gemini 2.5, OpenRouter)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="card-t">⚡ Quick Actions</div></div>
+    <div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+      <a href="/generate" class="btn btn-pri btn-full">✍️ Generate a Post</a>
+      <a href="/batch" class="btn btn-ghost btn-full">📅 Plan This Week (5 topics → 5 posts)</a>
+      <a href="/research" class="btn btn-ghost btn-full">🔍 Research a Topic (with sources)</a>
+      <a href="/queue" class="btn btn-ghost btn-full">📋 View / Post Queue</a>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h"><div class="card-t">🧠 How This App Decides What & When to Post</div></div>
+  <div class="card-b" style="font-size:13px;line-height:1.8;color:var(--text2)">
+    <p style="margin-bottom:10px"><strong style="color:var(--text)">WHEN</strong> — Fixed schedule based on platform research: LinkedIn Mon–Fri 9PM IST, Medium Tue/Thu 6PM IST, Twitter 5×/day.</p>
+    <p style="margin-bottom:10px"><strong style="color:var(--text)">WHAT</strong> — AI generates using algorithm-aware prompts (hook rules, hashtag limits, no external links), then auto-scores 0–100 and improves anything below 65.</p>
+    <p><strong style="color:var(--text)">SAFETY</strong> — Every post passes spam check + brand voice check before it's allowed into the queue. Posts that fail these checks are never published.</p>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function checkProviders() {
+  const box = document.getElementById('providers-box');
+  box.innerHTML = '<div class="loader"><span class="spin"></span> Pinging providers (this may take a few seconds)...</div>';
+  const data = await apiGet('/api/check-providers');
+  if (!data.ok) {
+    box.innerHTML = `<div class="placeholder">Check failed: ${data.error || 'unknown error'}</div>`;
+    return;
+  }
+  let html = '';
+  for (const [model, ok] of Object.entries(data.providers)) {
+    const icon = ok === true ? '✅' : ok === null ? '⚪' : '❌';
+    html += `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span>${icon} ${model}</span>
+    </div>`;
+  }
+  box.innerHTML = html;
+}
+
+// Refresh stats every 15s
+async function refreshStats() {
+  const data = await apiGet('/api/status');
+  if (data.ok === false) return;
+  if (data.queue) {
+    document.getElementById('s-total').textContent = data.queue.total;
+    document.getElementById('s-pending').textContent = data.queue.pending;
+    document.getElementById('s-posted').textContent = data.queue.posted;
+    document.getElementById('s-failed').textContent = data.queue.failed;
+  }
+}
+setInterval(refreshStats, 15000);
+</script>
+{% endblock %}

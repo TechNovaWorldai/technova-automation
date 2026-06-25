@@ -1,0 +1,11 @@
+# TechNova World v4.0 — Dependencies
+# Install: pip install -r requirements.txt
+
+requests==2.31.0       # API calls (Gemini, LinkedIn, RSS)
+Pillow==10.3.0          # Image watermarking
+reportlab==4.1.0        # LinkedIn PDF carousel
+python-dotenv==1.0.0    # Local .env file support
+schedule==1.2.1         # Local interactive scheduler (run.py menu option 15)
+flask==3.0.3            # Web dashboard
+gunicorn==22.0.0        # Production WSGI server (for Render web service)
+

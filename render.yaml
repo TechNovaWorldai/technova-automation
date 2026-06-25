@@ -1,0 +1,77 @@
+# ============================================================
+# TechNova World — Render.com Deployment Config v2
+# ============================================================
+# Render free tier has TWO service types used here:
+#   1. "web"  — the dashboard (sleeps after 15 min idle, wakes on
+#               next visit in ~30-50s — fine for a dashboard you
+#               check manually, NOT used for scheduled posting)
+#   2. "cron" — scheduled jobs (always run on time, no sleep issue,
+#               this is what actually posts to LinkedIn on schedule)
+#
+# IMPORTANT: The dashboard (web) and the schedulers (cron) are
+# INDEPENDENT. Even if the dashboard is asleep, the cron jobs still
+# fire on time because Render wakes them up just for that run.
+#
+# Setup:
+#   1. render.com pe free account banao
+#   2. "New +" -> "Blueprint" -> apna GitHub repo connect karo
+#   3. Render automatically yeh file detect karke 3 services banayega
+#   4. Har service ke Environment tab mein secrets daalo
+# ============================================================
+
+services:
+  # ── Web Dashboard (browser UI — input/output/queue/research) ──
+  - type: web
+    name: technova-dashboard
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn webapp:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+    healthCheckPath: /healthz
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false               # Render dashboard mein manually daalo
+      - key: OPENROUTER_API_KEY
+        sync: false               # optional fallback
+      - key: LINKEDIN_ACCESS_TOKEN
+        sync: false
+      - key: LINKEDIN_ORGANIZATION_ID
+        sync: false
+      - key: FLASK_SECRET_KEY
+        generateValue: true        # Render auto-generates a random secret
+      - key: SUPPRESS_CONFIG_WARNINGS
+        value: "1"
+
+  # ── LinkedIn scheduled poster (Mon-Fri 9PM IST) ─────────────
+  - type: cron
+    name: technova-linkedin-poster
+    runtime: python
+    schedule: "30 15 * * 1-5"     # 9:30 PM IST = 15:30 UTC, Mon-Fri
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python automation/post_scheduled.py"
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: LINKEDIN_ACCESS_TOKEN
+        sync: false
+      - key: LINKEDIN_ORGANIZATION_ID
+        sync: false
+      - key: SUPPRESS_CONFIG_WARNINGS
+        value: "1"
+
+  # ── Weekly content batch generator (Sunday 8PM IST) ─────────
+  - type: cron
+    name: technova-weekly-batch
+    runtime: python
+    schedule: "30 14 * * 0"       # 8:30 PM IST = 14:30 UTC, Sunday
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python automation/weekly_batch.py"
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: SUPPRESS_CONFIG_WARNINGS
+        value: "1"

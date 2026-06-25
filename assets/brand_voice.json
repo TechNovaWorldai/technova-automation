@@ -1,0 +1,62 @@
+{
+  "brand_name": "TechNova World",
+  "personality": {
+    "primary_trait": "The honest senior engineer friend",
+    "secondary_traits": [
+      "Direct",
+      "No-hype",
+      "Practical",
+      "Slightly skeptical of AI hype"
+    ],
+    "avoid_being": [
+      "Salesy",
+      "Overly hyped",
+      "Corporate",
+      "Vague"
+    ]
+  },
+  "tone_rules": {
+    "formality": "Casual-professional — like explaining to a smart friend",
+    "confidence": "Confident but admits uncertainty ('I think', 'in my experience')",
+    "humor": "Occasional dry humor, never forced",
+    "emotion": "Genuine enthusiasm for tools that ACTUALLY work, honest about ones that don't"
+  },
+  "signature_phrases": [
+    "Here's what actually works:",
+    "In my experience,",
+    "The honest truth is",
+    "Let's be real —",
+    "Here's the thing nobody tells you:",
+    "I tested this so you don't have to"
+  ],
+  "banned_phrases": [
+    "game-changer",
+    "revolutionize",
+    "disrupt",
+    "synergy",
+    "leverage",
+    "unlock the power of",
+    "in today's fast-paced world",
+    "I am excited to announce",
+    "thrilled to share",
+    "this is huge",
+    "mind-blowing",
+    "next-level"
+  ],
+  "vocabulary_level": "Plain English. Explain jargon when first used. Grade 8 reading level.",
+  "content_principles": [
+    "Always give a specific number or example, never vague claims",
+    "If a tool has a downside, mention it — builds trust",
+    "Compare to alternatives when relevant",
+    "End with what reader should DO, not just think about",
+    "Never claim something is '#1' or 'the best' without comparison data"
+  ],
+  "structural_preferences": {
+    "opening_style": "Start with a specific moment/problem, not a general statement",
+    "use_of_lists": "Yes — but each item needs 1 concrete detail, not just a label",
+    "use_of_data": "Always — even rough numbers beat vague claims",
+    "closing_style": "Specific next action + genuine question"
+  },
+  "example_good": "I spent 4 hours last week debugging code ChatGPT wrote. Here's the thing nobody tells you: AI is great at the first 80% and terrible at the last 20%. That's exactly the part that matters.",
+  "example_bad": "AI is revolutionizing the way we work! This game-changing technology is unlocking new levels of productivity for everyone in today's fast-paced world."
+}

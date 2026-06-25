@@ -1,0 +1,52 @@
+name: TechNova World — Scheduled LinkedIn Posting
+
+# ============================================================
+# Yeh workflow GitHub Actions ke "free 2000 min/month" quota
+# use karta hai. Cron schedule UTC mein hota hai — IST = UTC+5:30
+# isliye humne IST 9:00 PM ke liye UTC 15:30 use kiya hai.
+# ============================================================
+
+on:
+  schedule:
+    # LinkedIn post — Mon-Fri 9:00 PM IST = 15:30 UTC
+    - cron: '30 15 * * 1-5'
+  workflow_dispatch:        # Manual "Run workflow" button bhi milega
+
+permissions:
+  contents: write            # queue file update karne ke liye
+
+jobs:
+  post-to-linkedin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5       # hang ho jaaye toh 5 min mein kill ho jaayega
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run scheduled LinkedIn post
+        env:
+          GEMINI_API_KEY:            ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY:        ${{ secrets.OPENROUTER_API_KEY }}
+          LINKEDIN_ACCESS_TOKEN:     ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_ORGANIZATION_ID:  ${{ secrets.LINKEDIN_ORGANIZATION_ID }}
+          SUPPRESS_CONFIG_WARNINGS:  "1"
+        run: |
+          python automation/post_scheduled.py
+
+      - name: Commit updated queue (if changed)
+        run: |
+          git config --global user.name "TechNova Automation Bot"
+          git config --global user.email "automation@technova.world"
+          git add queue/ logs/ || true
+          git diff --staged --quiet || git commit -m "🤖 Auto-update queue [skip ci]"
+          git push || echo "Nothing to push"

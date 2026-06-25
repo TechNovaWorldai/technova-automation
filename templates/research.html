@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Research{% endblock %}
+{% block nav_research %}active{% endblock %}
+
+{% block content %}
+<div class="page-title">🔍 Research Agent</div>
+<div class="page-sub">Researches real AI news via RSS — content is grounded in actual sources, never fabricated</div>
+
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">📡 Latest AI News (Live RSS)</div></div>
+      <div class="card-b">
+        <button class="btn btn-pri btn-full" onclick="loadNews()" style="margin-bottom:14px">🔄 Fetch Latest News</button>
+        <div id="news-box"><div class="placeholder">Click to fetch latest AI news with sources</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">🔬 Research a Topic</div></div>
+      <div class="card-b">
+        <label class="lbl">Platform</label>
+        <select class="inp" id="r-platform" style="margin-bottom:12px">
+          <option value="linkedin">LinkedIn</option>
+          <option value="twitter">Twitter</option>
+          <option value="medium">Medium</option>
+        </select>
+        <label class="lbl">Topic</label>
+        <input class="inp" id="r-topic" style="margin-bottom:14px" placeholder="e.g. OpenAI's latest model release">
+        <button class="btn btn-pri btn-full" onclick="research()">🔍 Research + Write</button>
+
+        <div id="r-output" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadNews() {
+  const box = document.getElementById('news-box');
+  box.innerHTML = '<div class="loader"><span class="spin"></span> Fetching RSS feeds...</div>';
+  const data = await apiGet('/api/news-with-sources');
+  if (!data.ok) {
+    box.innerHTML = `<div class="placeholder">❌ ${escapeHtml(data.error || 'Fetch failed')}</div>`;
+    return;
+  }
+  box.innerHTML = data.items.map(item => `
+    <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+      <div style="font-weight:700;font-size:13px;margin-bottom:4px">${escapeHtml(item.title)}</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:6px">${escapeHtml(item.summary)}</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="tag t-blue">${escapeHtml(item.source)}</span>
+        ${item.link ? `<a href="${item.link}" target="_blank" style="font-size:11px">🔗 Source</a>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="useTopic('${escapeHtml(item.title).replace(/'/g,"\\'")}')">Use this →</button>
+      </div>
+    </div>
+  `).join('') || '<div class="placeholder">No news found</div>';
+}
+
+function useTopic(title) {
+  document.getElementById('r-topic').value = title;
+  toast('Topic filled in');
+}
+
+async function research() {
+  const platform = document.getElementById('r-platform').value;
+  const topic = document.getElementById('r-topic').value.trim();
+  if (!topic) { toast('Enter a topic', true); return; }
+
+  const out = document.getElementById('r-output');
+  out.innerHTML = '<div class="loader"><span class="spin"></span> Researching + writing (10-20s)...</div>';
+
+  const data = await apiPost('/api/research', { topic, platform });
+  if (!data.ok) {
+    out.innerHTML = `<div class="placeholder">❌ ${escapeHtml(data.error)}</div>`;
+    return;
+  }
+
+  const sourceTag = data.has_live_sources
+    ? `<span class="tag t-green">✅ Based on ${data.sources.length} live source(s)</span>`
+    : `<span class="tag t-amber">⚠️ No live source found — general knowledge</span>`;
+
+  let html = `<div style="margin-bottom:12px">${sourceTag}</div>`;
+  html += `<div class="out-box" style="margin-bottom:12px">${escapeHtml(data.content)}</div>`;
+
+  if (data.sources && data.sources.length) {
+    html += `<div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:6px">SOURCES CITED:</div>`;
+    html += data.sources.map(s => `
+      <div style="font-size:12px;margin-bottom:6px">
+        📰 <strong>${escapeHtml(s.source)}</strong>: ${escapeHtml(s.title)}
+        ${s.link ? `<br><a href="${s.link}" target="_blank" style="font-size:11px">${s.link}</a>` : ''}
+      </div>`).join('');
+  }
+
+  html += `<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="copyText(${JSON.stringify(data.content)})">📋 Copy Content</button>`;
+
+  out.innerHTML = html;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Batch{% endblock %}
+{% block nav_batch %}active{% endblock %}
+
+{% block content %}
+<div class="page-title">📅 Batch Mode — Sunday Planning</div>
+<div class="page-sub">Enter 5 topics (one per day) — each gets its own platform + content, generated separately</div>
+
+<div class="card">
+  <div class="card-h">
+    <div class="card-t">🗓️ This Week's Topics</div>
+    <button class="btn btn-ghost btn-sm" onclick="loadTrending()">🔥 Suggest from Trending</button>
+  </div>
+  <div class="card-b">
+    <div id="batch-rows"></div>
+    <button class="btn btn-pri btn-full" id="start-btn" style="margin-top:14px" onclick="startBatch()">🚀 Generate All 5</button>
+  </div>
+</div>
+
+<div class="card" id="results-card" style="display:none">
+  <div class="card-h">
+    <div class="card-t">📊 Results</div>
+    <div style="display:flex;gap:8px">
+      <span id="progress-tag" class="tag t-blue">0/5</span>
+      <button class="btn btn-green btn-sm" id="queue-all-btn" style="display:none" onclick="queueAll()">📅 Add All to Queue</button>
+    </div>
+  </div>
+  <div class="card-b" id="results-box"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+let currentJobId = null;
+let pollTimer = null;
+
+function renderRows() {
+  const box = document.getElementById('batch-rows');
+  box.innerHTML = DAYS.map((day, i) => `
+    <div style="display:grid;grid-template-columns:90px 1fr 150px;gap:10px;margin-bottom:10px;align-items:center">
+      <div style="font-size:12px;font-weight:700;color:var(--text2)">${day}</div>
+      <input class="inp" id="topic-${i}" placeholder="Topic for ${day}...">
+      <select class="inp" id="platform-${i}">
+        <option value="linkedin">LinkedIn</option>
+        <option value="twitter">Twitter (5 posts)</option>
+        <option value="medium">Medium</option>
+      </select>
+    </div>
+  `).join('');
+}
+renderRows();
+
+async function loadTrending() {
+  toast('Fetching trending topics...');
+  const data = await apiGet('/api/trending');
+  if (!data.ok) return;
+  const lines = data.trending.split('\n').map(l => l.replace(/^[\d\.\-\*\s]+/, '').trim())
+    .filter(l => l.length > 15 && l.length < 100);
+  for (let i = 0; i < 5 && i < lines.length; i++) {
+    document.getElementById(`topic-${i}`).value = lines[i];
+  }
+  toast('✅ Suggestions filled in — edit as needed');
+}
+
+async function startBatch() {
+  const items = DAYS.map((day, i) => ({
+    day,
+    topic: document.getElementById(`topic-${i}`).value.trim(),
+    platform: document.getElementById(`platform-${i}`).value,
+  })).filter(item => item.topic);
+
+  if (items.length === 0) { toast('Enter at least one topic', true); return; }
+
+  document.getElementById('start-btn').disabled = true;
+  document.getElementById('results-card').style.display = 'block';
+  document.getElementById('results-box').innerHTML = '<div class="loader"><span class="spin"></span> Starting batch job...</div>';
+  document.getElementById('queue-all-btn').style.display = 'none';
+
+  const data = await apiPost('/api/batch/start', { items });
+  if (!data.ok) {
+    document.getElementById('start-btn').disabled = false;
+    return;
+  }
+  currentJobId = data.job_id;
+  pollTimer = setInterval(pollBatch, 2000);
+}
+
+async function pollBatch() {
+  if (!currentJobId) return;
+  const data = await apiGet(`/api/batch/status/${currentJobId}`);
+  if (!data.ok) { clearInterval(pollTimer); return; }
+
+  document.getElementById('progress-tag').textContent = `${data.done}/${data.total}`;
+
+  let html = data.results.map(r => {
+    const statusTag = r.ok
+      ? `<span class="tag t-green">✅ Done</span>`
+      : `<span class="tag t-rose">❌ Failed</span>`;
+    const scoreTag = r.score != null ? `<span class="tag t-blue">${r.score}/100</span>` : '';
+    return `
+      <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center">
+          <div><strong>${r.day}</strong> — <span class="tag t-purple">${r.platform}</span></div>
+          <div style="display:flex;gap:6px">${statusTag} ${scoreTag}</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px">${escapeHtml(r.topic)}</div>
+        ${r.content ? `<div style="white-space:pre-wrap;font-size:13px;background:var(--s2);padding:12px;border-radius:8px">${escapeHtml(r.content.slice(0,400))}${r.content.length > 400 ? '...' : ''}</div>` : `<div style="color:var(--rose);font-size:12px">${escapeHtml(r.error || 'No content generated')}</div>`}
+      </div>`;
+  }).join('');
+
+  document.getElementById('results-box').innerHTML = html || '<div class="placeholder">Working...</div>';
+
+  if (data.status === 'complete') {
+    clearInterval(pollTimer);
+    document.getElementById('start-btn').disabled = false;
+    document.getElementById('queue-all-btn').style.display = 'inline-flex';
+    toast('✅ Batch generation complete!');
+  }
+}
+
+async function queueAll() {
+  const data = await apiPost('/api/batch/queue', { job_id: currentJobId });
+  if (data.ok) toast(`✅ ${data.queued} posts added to queue!`);
+}
+</script>
+{% endblock %}

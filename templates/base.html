@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}TechNova World{% endblock %} — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-gem">🌐</div>
+    <div>
+      <div class="brand-name">{{ brand or 'TechNova World' }}</div>
+      <div class="brand-sub">Automation Dashboard</div>
+    </div>
+  </div>
+  <nav class="nav-pills">
+    <a href="/" class="nav-pill {% block nav_home %}{% endblock %}">📊 Dashboard</a>
+    <a href="/generate" class="nav-pill {% block nav_generate %}{% endblock %}">✍️ Generate</a>
+    <a href="/batch" class="nav-pill {% block nav_batch %}{% endblock %}">📅 Batch</a>
+    <a href="/research" class="nav-pill {% block nav_research %}{% endblock %}">🔍 Research</a>
+    <a href="/queue" class="nav-pill {% block nav_queue %}{% endblock %}">📋 Queue</a>
+  </nav>
+  <div id="status-chip" class="status-chip"><span class="dot"></span> Checking...</div>
+</header>
+
+<div class="wrap">
+  {% block content %}{% endblock %}
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Queue{% endblock %}
+{% block nav_queue %}active{% endblock %}
+
+{% block content %}
+<div class="page-title">📋 Post Queue</div>
+<div class="page-sub">Posts waiting to go out — auto-posted Mon–Fri 9PM IST by the scheduler, or trigger manually below</div>
+
+<div class="g4" style="margin-bottom:18px">
+  <div class="stat blue"><div class="stat-n c-blue" id="st-total">-</div><div class="stat-l">Total</div></div>
+  <div class="stat amber"><div class="stat-n c-amber" id="st-pending">-</div><div class="stat-l">Pending</div></div>
+  <div class="stat green"><div class="stat-n c-green" id="st-posted">-</div><div class="stat-l">Posted</div></div>
+  <div class="stat purple"><div class="stat-n c-rose" id="st-failed">-</div><div class="stat-l">Failed</div></div>
+</div>
+
+<div class="card">
+  <div class="card-h">
+    <div class="card-t">📑 Queue Items</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-pri btn-sm" onclick="postNow()">▶️ Post Next LinkedIn Now</button>
+      <a class="btn btn-green btn-sm" href="/api/queue/export-buffer?platform=twitter" id="buffer-export-btn">🐦 Export Twitter → Buffer CSV</a>
+      <button class="btn btn-rose btn-sm" onclick="clearQueue()">🗑️ Clear Queue</button>
+    </div>
+  </div>
+  <div class="card-b" style="padding:0">
+    <table class="dt" id="queue-table">
+      <thead><tr><th>Platform</th><th>Topic</th><th>Status</th><th>Added</th></tr></thead>
+      <tbody id="queue-body"><tr><td colspan="4" style="text-align:center;padding:30px"><span class="loader"><span class="spin"></span> Loading...</span></td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h"><div class="card-t">🐦 Twitter via Buffer — Setup Guide</div><span class="tag t-green">Free Plan</span></div>
+  <div class="card-b" style="font-size:13px;line-height:1.8;color:var(--text2)">
+    <p style="margin-bottom:10px;color:var(--text)"><strong>Twitter's own API costs $100/month — Buffer's free plan is the practical alternative.</strong></p>
+    <ol style="margin-left:18px;margin-bottom:14px">
+      <li style="margin-bottom:6px">Sign up free at <a href="https://buffer.com" target="_blank">buffer.com</a> and connect your Twitter/X account (free plan: 3 channels, 10 queued posts each).</li>
+      <li style="margin-bottom:6px">Click <strong>"🐦 Export Twitter → Buffer CSV"</strong> above — downloads all pending Twitter posts from this queue.</li>
+      <li style="margin-bottom:6px">In Buffer: open your Twitter channel → <strong>Settings (⚙️) → General → Bulk Upload</strong> → download Buffer's CSV template once (column order must match).</li>
+      <li style="margin-bottom:6px">Upload the file you exported from here. Buffer shows a preview — review for errors, then set times for each post.</li>
+      <li>Click <strong>"Add Posts to Queue"</strong> — Buffer auto-posts at the scheduled times.</li>
+    </ol>
+    <p style="font-size:11px;color:var(--text3)">⚠️ Buffer's bulk upload caps at 100 posts per import and free plan allows 10 queued per channel — well within a weekly batch of 25 tweets.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h"><div class="card-t">➕ Add Manually</div></div>
+  <div class="card-b">
+    <div class="g2" style="margin-bottom:12px">
+      <div>
+        <label class="lbl">Platform</label>
+        <select class="inp" id="add-platform"><option value="linkedin">LinkedIn</option><option value="twitter">Twitter</option><option value="medium">Medium</option></select>
+      </div>
+      <div>
+        <label class="lbl">Topic (optional label)</label>
+        <input class="inp" id="add-topic" placeholder="e.g. AI productivity tips">
+      </div>
+    </div>
+    <label class="lbl">Content</label>
+    <textarea class="inp" id="add-content" style="margin-bottom:12px" placeholder="Paste post content here..."></textarea>
+    <button class="btn btn-pri" onclick="addManual()">📅 Add to Queue</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadQueue() {
+  const data = await apiGet('/api/queue');
+  if (!data.ok) return;
+
+  document.getElementById('st-total').textContent = data.stats.total;
+  document.getElementById('st-pending').textContent = data.stats.pending;
+  document.getElementById('st-posted').textContent = data.stats.posted;
+  document.getElementById('st-failed').textContent = data.stats.failed;
+
+  const tbody = document.getElementById('queue-body');
+  if (!data.items.length) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text3)">Queue is empty</td></tr>';
+    return;
+  }
+
+  const statusTag = (s) => {
+    if (s === 'posted') return '<span class="tag t-green">✅ Posted</span>';
+    if (s === 'failed') return '<span class="tag t-rose">❌ Failed</span>';
+    return '<span class="tag t-amber">⏳ Pending</span>';
+  };
+
+  tbody.innerHTML = data.items.slice().reverse().map(item => `
+    <tr>
+      <td><span class="tag t-blue">${escapeHtml(item.platform)}</span></td>
+      <td style="max-width:400px">${escapeHtml((item.topic || item.content || '').slice(0,80))}</td>
+      <td>${statusTag(item.status)}</td>
+      <td style="font-size:11px;color:var(--text3);font-family:var(--mono)">${(item.added_at || '').slice(0,16).replace('T',' ')}</td>
+    </tr>
+  `).join('');
+}
+
+async function postNow() {
+  if (!confirm('Post the next pending LinkedIn item right now?')) return;
+  const data = await apiPost('/api/queue/post-now', {});
+  if (data.ok) toast('✅ Posted to LinkedIn!');
+  loadQueue();
+}
+
+async function clearQueue() {
+  if (!confirm('Clear the entire queue? This cannot be undone.')) return;
+  await apiPost('/api/queue/clear', {});
+  toast('Queue cleared');
+  loadQueue();
+}
+
+async function addManual() {
+  const platform = document.getElementById('add-platform').value;
+  const topic = document.getElementById('add-topic').value.trim();
+  const content = document.getElementById('add-content').value.trim();
+  if (!content) { toast('Content required', true); return; }
+
+  const data = await apiPost('/api/queue/add', { platform, topic, content });
+  if (data.ok) {
+    toast('✅ Added to queue');
+    document.getElementById('add-content').value = '';
+    document.getElementById('add-topic').value = '';
+    loadQueue();
+  }
+}
+
+loadQueue();
+setInterval(loadQueue, 10000);
+</script>
+{% endblock %}

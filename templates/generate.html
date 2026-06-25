@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}Generate{% endblock %}
+{% block nav_generate %}active{% endblock %}
+
+{% block content %}
+<div class="page-title">✍️ Generate Content</div>
+<div class="page-sub">Type a topic, pick a platform, see scored output instantly</div>
+
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">📝 Input</div></div>
+      <div class="card-b">
+        <label class="lbl">Platform</label>
+        <select class="inp" id="platform" style="margin-bottom:14px">
+          <option value="linkedin">LinkedIn Post</option>
+          <option value="twitter">Twitter — 5 Posts</option>
+          <option value="twitter_thread">Twitter Thread (8 tweets)</option>
+          <option value="medium">Medium Article</option>
+        </select>
+
+        <label class="lbl">Topic</label>
+        <textarea class="inp" id="topic" style="margin-bottom:14px" placeholder="e.g. 5 AI tools that save 10 hours every week"></textarea>
+
+        <button class="btn btn-pri btn-full" id="gen-btn" onclick="generate()">🤖 Generate</button>
+
+        <div style="margin-top:18px;border-top:1px solid var(--border);padding-top:16px">
+          <label class="lbl">Or repurpose an existing article →</label>
+          <textarea class="inp" id="article-input" style="margin-bottom:10px;min-height:90px" placeholder="Paste a full article to repurpose into all platforms..."></textarea>
+          <button class="btn btn-ghost btn-full" onclick="repurpose()">🔁 Repurpose to All Platforms</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">📤 Output</div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm" onclick="copyOutput()">📋 Copy</button>
+          <button class="btn btn-green btn-sm" id="queue-btn" style="display:none" onclick="addToQueue()">📅 Add to Queue</button>
+        </div>
+      </div>
+      <div class="card-b">
+        <div id="output" class="out-box">
+          <div class="placeholder">Output will appear here after you generate.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let lastContent = '';
+let lastPlatform = '';
+let lastTopic = '';
+
+function setLoading(msg) {
+  document.getElementById('output').innerHTML = `<div class="loader"><span class="spin"></span> ${msg}</div>`;
+  document.getElementById('gen-btn').disabled = true;
+  document.getElementById('queue-btn').style.display = 'none';
+}
+
+function doneLoading() {
+  document.getElementById('gen-btn').disabled = false;
+}
+
+function renderScoreBlock(score) {
+  if (!score) return '';
+  const color = score.total >= 80 ? 'var(--green)' : score.total >= 60 ? 'var(--amber)' : 'var(--rose)';
+  let html = `<div class="score-row">
+    <div class="score-ring" style="border-color:${color};color:${color}">${score.total}</div>
+    <div>
+      <div style="font-weight:700;font-size:13px">Grade ${score.grade}</div>
+      <div style="font-size:11px;color:var(--text2)">Algorithm quality score</div>
+    </div>
+  </div>`;
+  if (score.failed && score.failed.length) {
+    html += `<div style="margin-bottom:10px">${score.failed.map(f => `<div style="font-size:12px;color:var(--rose);margin-bottom:3px">${escapeHtml(f)}</div>`).join('')}</div>`;
+  }
+  if (score.suggestions && score.suggestions.length) {
+    html += `<div style="margin-bottom:10px">${score.suggestions.map(s => `<div style="font-size:12px;color:var(--text2);margin-bottom:3px">${escapeHtml(s)}</div>`).join('')}</div>`;
+  }
+  return html;
+}
+
+async function generate() {
+  const platform = document.getElementById('platform').value;
+  const topic = document.getElementById('topic').value.trim();
+  if (!topic) { toast('Enter a topic first', true); return; }
+
+  setLoading(`Generating ${platform} content (this can take 5–20s)...`);
+  const data = await apiPost('/api/generate', { platform, topic });
+  doneLoading();
+
+  if (!data.ok) {
+    document.getElementById('output').innerHTML = `<div class="placeholder">❌ ${escapeHtml(data.error || 'Generation failed')}</div>`;
+    return;
+  }
+
+  lastPlatform = platform;
+  lastTopic = topic;
+
+  let html = '';
+  if (platform === 'linkedin') {
+    lastContent = data.content;
+    html += renderScoreBlock(data.score);
+    if (!data.spam_safe) html += `<div class="tag t-rose" style="margin-bottom:10px">🚨 Spam check failed</div>`;
+    html += `<div class="tag t-blue" style="margin-bottom:14px">Brand voice: ${data.voice_verdict} (${data.voice_score}/100)</div>`;
+    html += `<div style="white-space:pre-wrap">${escapeHtml(data.content)}</div>`;
+  } else if (platform === 'twitter') {
+    lastContent = data.tweets.map(t => t.text).join('\n\n---\n\n');
+    html += data.tweets.map((t, i) => `
+      <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span class="tag t-blue">Tweet ${i+1}</span>
+          <span style="font-size:11px;color:${scoreColor(t.score)}">${t.score}/100</span>
+        </div>
+        <div>${escapeHtml(t.text)}</div>
+      </div>`).join('');
+  } else if (platform === 'twitter_thread') {
+    lastContent = data.thread.join('\n\n');
+    html += data.thread.map((t, i) => `<div style="margin-bottom:10px"><span class="tag t-purple">${i+1}/${data.thread.length}</span><div style="margin-top:4px">${escapeHtml(t)}</div></div>`).join('');
+  } else if (platform === 'medium') {
+    lastContent = `TITLE: ${data.article.title}\n\n${data.article.content}`;
+    html += renderScoreBlock(data.score);
+    html += `<div style="font-weight:700;font-size:15px;margin-bottom:6px">${escapeHtml(data.article.title || '')}</div>`;
+    html += `<div style="color:var(--text2);font-size:12px;margin-bottom:14px">${escapeHtml(data.article.subtitle || '')}</div>`;
+    html += `<div style="white-space:pre-wrap">${escapeHtml(data.article.content || '')}</div>`;
+  }
+
+  document.getElementById('output').innerHTML = html;
+  document.getElementById('queue-btn').style.display = 'inline-flex';
+}
+
+async function repurpose() {
+  const article = document.getElementById('article-input').value.trim();
+  if (article.length < 100) { toast('Article too short (min 100 chars)', true); return; }
+
+  setLoading('Repurposing into all platform formats...');
+  const data = await apiPost('/api/repurpose', { article });
+  doneLoading();
+
+  if (!data.ok) {
+    document.getElementById('output').innerHTML = `<div class="placeholder">❌ ${escapeHtml(data.error)}</div>`;
+    return;
+  }
+
+  let html = '';
+  for (const [key, val] of Object.entries(data.formats)) {
+    html += `<div style="margin-bottom:18px">
+      <div class="tag t-purple" style="margin-bottom:8px">${key.replace(/_/g,' ').toUpperCase()}</div>
+      <div style="white-space:pre-wrap;font-size:13px">${escapeHtml(val)}</div>
+    </div>`;
+  }
+  lastContent = Object.values(data.formats).join('\n\n---\n\n');
+  document.getElementById('output').innerHTML = html;
+  document.getElementById('queue-btn').style.display = 'none';
+}
+
+function copyOutput() {
+  if (!lastContent) { toast('Nothing to copy yet', true); return; }
+  copyText(lastContent);
+}
+
+async function addToQueue() {
+  if (!lastContent) return;
+  const data = await apiPost('/api/queue/add', { platform: lastPlatform, content: lastContent, topic: lastTopic });
+  if (data.ok) toast('✅ Added to queue!');
+}
+</script>
+{% endblock %}

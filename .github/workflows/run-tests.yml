@@ -1,0 +1,46 @@
+name: TechNova World — Test Suite
+
+# ============================================================
+# Har push/PR pe automatically saare 62 tests chalte hain.
+# Agar koi test fail ho, GitHub tumhe email karega.
+# ============================================================
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run full test suite
+        env:
+          GEMINI_API_KEY: "ci_test_key_not_real"
+          SUPPRESS_CONFIG_WARNINGS: "1"
+        run: |
+          python tests/run_tests.py
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: logs/test_report_*.json
+          retention-days: 14

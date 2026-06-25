@@ -1,0 +1,62 @@
+# ============================================================
+# TechNova World — .gitignore
+# Yeh files KABHI GitHub pe push NAHI hongi
+# ============================================================
+
+# Secrets — CRITICAL, kabhi commit mat karo
+.env
+.env.local
+*.key
+secrets.py
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+venv/
+env/
+.venv/
+
+# Generated content (yeh apne paas rakho, GitHub pe nahi)
+generated/*.txt
+generated/deep_research/*.txt
+generated/*.pdf
+!generated/.gitkeep
+
+# Runtime data
+queue/*.json
+logs/*.log
+logs/*.json
+!queue/.gitkeep
+!logs/.gitkeep
+
+# Images (apni personal images push mat karo)
+images/*.jpg
+images/*.jpeg
+images/*.png
+images/watermarked/*
+!images/.gitkeep
+
+# Assets (brand voice config — agar personal info hai toh)
+# assets/brand_voice.json  # uncomment if you want to keep this private
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Test artifacts
+tests/.tmp*
+tests/.wm*
+tests/.batch*
+tests/.load*
+tests/.corrupt*
