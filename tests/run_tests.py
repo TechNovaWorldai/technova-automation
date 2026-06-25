@@ -624,6 +624,7 @@ def suite_watermark():
             img = Image.open(out)
             assert img.mode == "RGB"
             assert img.size == (400, 300)
+            img.close()
             Path(out).unlink(missing_ok=True)
 
     for name, fn in [
@@ -1063,12 +1064,12 @@ def suite_deployment():
 
     def test_gitignore_protects_env():
         """'.env' must be in .gitignore so secrets never leak to git."""
-        gi = Path(".gitignore").read_text()
+        gi = Path(".gitignore").read_text(encoding="utf-8")
         assert ".env" in gi, ".env not protected in .gitignore!"
 
     def test_no_hardcoded_keys_in_config():
         """config.py source code should NOT contain hardcoded-looking API keys."""
-        src = Path("config.py").read_text()
+        src = Path("config.py").read_text(encoding="utf-8")
         # Real Gemini keys start with AIzaSy, LinkedIn tokens with AQV
         assert "AIzaSy" not in src, "Possible hardcoded Gemini key found in config.py!"
         assert "_env(" in src, "config.py should read from environment variables"
