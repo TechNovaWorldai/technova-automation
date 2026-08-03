@@ -86,7 +86,7 @@ def _warn_if_missing():
         missing.append("LINKEDIN_ORGANIZATION_ID ya LINKEDIN_PERSON_URN (ek zaroori hai)")
 
     if missing and _env("SUPPRESS_CONFIG_WARNINGS") != "1":
-        print("⚠️  Missing environment variables:")
+        print("[WARNING] Missing environment variables:")
         for m in missing:
             print(f"    - {m}")
         print("   Local: add to .env file")

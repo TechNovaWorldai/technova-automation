@@ -269,32 +269,32 @@ def diagnose_linkedin() -> None:
         python -c "from linkedin_poster import diagnose_linkedin; diagnose_linkedin()"
     """
     print("\n" + "=" * 60)
-    print("  🔍  TechNova World — LinkedIn Diagnostics")
+    print("  [DIAGNOSTICS] TechNova World -- LinkedIn Diagnostics")
     print("=" * 60)
 
     token = cfg.LINKEDIN_ACCESS_TOKEN
     org   = cfg.LINKEDIN_ORGANIZATION_ID
     urn   = cfg.LINKEDIN_PERSON_URN
 
-    print(f"\n  LINKEDIN_ACCESS_TOKEN      : {'\u2705 Set (' + token[:8] + '...)' if token else '\u274c NOT SET'}")
-    print(f"  LINKEDIN_ORGANIZATION_ID   : {'\u2705 ' + org if org else '\u26a0\ufe0f  Not set (personal-only mode)'}")
-    print(f"  LINKEDIN_PERSON_URN        : {'\u2705 ' + urn if urn else '\u26a0\ufe0f  Not set (will auto-fetch)'}")
-    print(f"  LINKEDIN_FALLBACK_TO_PERSONAL: {'\u2705 Enabled' if cfg.LINKEDIN_FALLBACK_TO_PERSONAL else '\u274c Disabled'}")
+    print(f"\n  LINKEDIN_ACCESS_TOKEN        : {'[SET] (' + token[:8] + '...)' if token else '[NOT SET]'}")
+    print(f"  LINKEDIN_ORGANIZATION_ID     : {org if org else '[NOT SET] (personal-only mode)'}")
+    print(f"  LINKEDIN_PERSON_URN          : {urn if urn else '[NOT SET] (will auto-fetch)'}")
+    print(f"  LINKEDIN_FALLBACK_TO_PERSONAL: {'Enabled' if cfg.LINKEDIN_FALLBACK_TO_PERSONAL else 'Disabled'}")
 
     if not token:
-        print("\n  \u274c FATAL: No access token. Cannot proceed.")
-        print("  → Get one at: https://developer.linkedin.com/tools/oauth")
+        print("\n  [FATAL] No access token. Cannot proceed.")
+        print("  -> Get one at: https://developer.linkedin.com/tools/oauth")
         print("=" * 60 + "\n")
         return
 
     print("\n  Testing connection ...")
     ok = check_linkedin_connection()
-    print(f"  Connection check : {'\u2705 PASS' if ok else '\u274c FAIL'}")
+    print(f"  Connection check : {'[PASS]' if ok else '[FAIL]'}")
 
     if not urn:
         print("  Auto-fetching Person URN ...")
         fetched = _fetch_person_urn()
-        print(f"  Person URN       : {'\u2705 ' + fetched if fetched else '\u274c Could not fetch (see warnings above)'}")
+        print(f"  Person URN       : {fetched if fetched else '[FAIL] Could not fetch'}")
     else:
         fetched = urn
 
@@ -303,12 +303,12 @@ def diagnose_linkedin() -> None:
     elif fetched:
         print(f"\n  Posting target   : Personal profile ({fetched})")
     else:
-        print("\n  \u274c No posting target available. Set LINKEDIN_ORGANIZATION_ID or LINKEDIN_PERSON_URN.")
+        print("\n  [FAIL] No posting target available. Set LINKEDIN_ORGANIZATION_ID or LINKEDIN_PERSON_URN.")
 
     print("\n  Required OAuth Scopes:")
-    print("    r_liteprofile      — read profile (URN auto-fetch)")
-    print("    w_member_social    — post as member (personal)")
-    print("    rw_organization_social — post as company (needs LinkedIn approval)")
+    print("    r_liteprofile          -- read profile (URN auto-fetch)")
+    print("    w_member_social        -- post as member (personal)")
+    print("    rw_organization_social -- post as company (needs LinkedIn approval)")
     print("\n  If you see 403 errors, regenerate your token at:")
     print("    https://developer.linkedin.com/tools/oauth")
     print("  and ensure ALL three scopes above are checked.")
