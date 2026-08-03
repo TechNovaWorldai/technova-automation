@@ -1,10 +1,13 @@
 """
-TechNova World — Algorithm-Aware AI Generator v5.0
-Har platform ke algorithm rules ko prompts mein inject karta hai
-Auto quality-check + retry if score is low
+TechNova World — Algorithm-Aware AI Content Generator v5.0
 
-v5.0: Ab ai_client.py ke through generate karta hai — Gemini 2.5
-Flash/Pro + OpenRouter free fallback automatically handle ho jaata hai.
+Generates social-media posts and articles with platform-specific algorithm
+rules baked into every prompt.  After generation, each piece of content is
+automatically scored and optionally improved if the quality score falls
+below ``MIN_QUALITY_SCORE``.
+
+v5.0 change: generation is now routed through ``ai_client.py`` which
+provides a transparent Gemini 2.5 Flash -> Pro -> OpenRouter fallback chain.
 """
 
 import re
@@ -30,10 +33,12 @@ MAX_IMPROVE_TRIES = 2           # Max re-generation attempts
 
 def _gemini(prompt: str, max_tokens: int = 1300) -> Optional[str]:
     """
-    Naam purana rakha hai (_gemini) taaki baaki saara code unchanged
-    chale, lekin ab yeh ai_client.generate_text() call karta hai —
-    jo Gemini 2.5 Flash -> Gemini 2.5 Pro -> OpenRouter free models
-    ka poora fallback chain try karta hai.
+    Thin wrapper that delegates to ``ai_client.generate_text()``.
+
+    The function name is intentionally kept as ``_gemini`` to maintain
+    backwards compatibility with callers inside this module, but it now
+    exercises the full Gemini -> OpenRouter fallback chain rather than
+    hitting a single model directly.
     """
     return generate_text(prompt, max_tokens=max_tokens)
 
@@ -42,7 +47,12 @@ def _gemini(prompt: str, max_tokens: int = 1300) -> Optional[str]:
 
 def _improve_post(content: str, platform: str, score: QualityScore,
                   topic: str) -> Optional[str]:
-    """Weak scoring post ko improve karo."""
+    """Re-generate a post that scored below the quality threshold.
+
+    Passes the original content, the list of scoring failures, and
+    concrete improvement suggestions back to the model so the rewrite
+    is targeted rather than a blank-slate regeneration.
+    """
     issues = "\n".join(score.failed + score.warnings)
     suggestions = "\n".join(score.suggestions)
 
@@ -72,14 +82,22 @@ def generate_linkedin_post(topic: str,
                             auto_improve: bool = True,
                             show_score: bool = True) -> Optional[str]:
     """
-    LinkedIn post generate karo — algo-aware + auto-improve.
+    Generate an algorithm-optimised LinkedIn post.
 
-    Flow:
-      1. Algo-aware prompt → Gemini
-      2. Quality score check
-      3. Spam check
-      4. If score < MIN_QUALITY_SCORE → improve (up to MAX_IMPROVE_TRIES)
-      5. Return best version
+    Pipeline:
+      1. Build an algo-aware prompt and send to AI (via ``_gemini``).
+      2. Score the output with ``score_linkedin_post``.
+      3. Run a spam check.
+      4. If score < MIN_QUALITY_SCORE, rewrite up to MAX_IMPROVE_TRIES times.
+      5. Return the best-scoring clean version.
+
+    Args:
+        topic:        Subject of the post (fed into the prompt).
+        auto_improve: Whether to trigger automatic rewrites on low scores.
+        show_score:   Whether to print the quality report to the logger.
+
+    Returns:
+        The finished post string, or None if AI generation failed entirely.
     """
     logger.info(f"💼 LinkedIn post: {topic[:50]}")
     prompt = build_linkedin_prompt(topic, cfg.BRAND_NAME, cfg.AUDIENCE)
@@ -120,7 +138,11 @@ def generate_linkedin_post(topic: str,
 
 def generate_twitter_posts(topic: str, count: int = 5,
                             show_score: bool = False) -> List[str]:
-    """Twitter posts generate karo — algo-aware (≤2 hashtags, replies-first)."""
+    """Generate standalone Twitter/X posts optimised for replies and bookmarks.
+
+    Each post respects the 280-character hard limit and the 2024 algorithm
+    rule of at most 2 hashtags per tweet.
+    """
     logger.info(f"🐦 Twitter {count} posts: {topic[:50]}")
     prompt = build_twitter_prompt(topic, cfg.BRAND_NAME, cfg.AUDIENCE, "single")
 
@@ -154,7 +176,7 @@ def generate_twitter_posts(topic: str, count: int = 5,
 
 
 def generate_twitter_thread(topic: str, tweet_count: int = 8) -> List[str]:
-    """Twitter thread generate karo — algo-aware."""
+    """Generate a Twitter/X thread with a viral hook and numbered tweets."""
     logger.info(f"🧵 Thread ({tweet_count} tweets): {topic[:50]}")
     prompt = build_twitter_prompt(topic, cfg.BRAND_NAME, cfg.AUDIENCE, "thread")
 
@@ -177,7 +199,10 @@ def generate_twitter_thread(topic: str, tweet_count: int = 8) -> List[str]:
 
 
 def generate_medium_article(topic: str, show_score: bool = True) -> Dict:
-    """Medium article generate karo — algo-aware (read ratio optimised)."""
+    """Generate a complete Medium article optimised for read ratio and distribution.
+
+    Returns a dict with keys: ``title``, ``subtitle``, ``content``, ``tags``.
+    """
     logger.info(f"📝 Medium article: {topic[:50]}")
     prompt = build_medium_prompt(topic, cfg.BRAND_NAME, cfg.AUDIENCE)
 
@@ -242,7 +267,12 @@ def generate_medium_article(topic: str, show_score: bool = True) -> Dict:
 
 
 def repurpose_article(article_text: str) -> Dict:
-    """Article ko sab platforms ke liye repurpose — algo rules applied."""
+    """Repurpose a long-form article into all social-media formats in one call.
+
+    Returns a dict with keys: ``linkedin_post``, ``twitter_hooks``,
+    ``twitter_thread``, ``carousel_titles``, ``newsletter``.
+    Each format has the appropriate algorithm rules applied.
+    """
     logger.info("🔁 Repurposing article...")
 
     if len(article_text.strip()) < 100:
@@ -336,7 +366,12 @@ Only include topics where there is REAL audience demand. No filler."""
 
 
 def generate_weekly_batch(topics: List[str]) -> Dict:
-    """Poori week ka content generate karo — algo-optimised each piece."""
+    """Generate a full week of algorithm-optimised content for up to five topics.
+
+    Produces LinkedIn posts, Twitter posts, and Medium articles (Tue/Thu only)
+    for each topic and saves them to the ``generated/`` folder.
+    Returns a nested dict keyed by weekday name.
+    """
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     all_content = {}
     Path("generated").mkdir(exist_ok=True)

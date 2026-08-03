@@ -1,33 +1,34 @@
 # ============================================================
 # TechNova World — Config v4.0 (Deployment-Safe)
 # ============================================================
-# CRITICAL: Yeh file ab API keys ko ENVIRONMENT VARIABLES se
-# leta hai, hardcoded values se NAHI. Isliye yeh GitHub pe
-# safely push kar sakte ho — koi key leak nahi hogi.
+# IMPORTANT: This file reads ALL secrets from environment variables,
+# NOT from hardcoded values.  It is therefore safe to commit to GitHub
+# without leaking any credentials.
 #
-# LOCAL TESTING (apne computer pe):
-#   1. ".env.example" ko copy karke ".env" banao
-#   2. ".env" mein apni real keys daalo
-#   3. ".env" KABHI git mein commit mat karo (.gitignore mein hai already)
+# LOCAL DEVELOPMENT:
+#   1. Copy ".env.example" to ".env"
+#   2. Fill in your real API keys in ".env"
+#   3. Never commit ".env" to Git (".gitignore" already excludes it)
 #
-# GITHUB ACTIONS / RENDER (deployment):
-#   Keys "Secrets" / "Environment Variables" panel mein daalo
-#   (isi naam se: GEMINI_API_KEY, LINKEDIN_ACCESS_TOKEN, etc.)
-#   Yeh file automatically wahan se pick kar lega.
+# GITHUB ACTIONS / RENDER (production):
+#   Set keys in the repository Secrets panel or Render’s
+#   Environment Variables panel using the exact names below
+#   (e.g. GEMINI_API_KEY, LINKEDIN_ACCESS_TOKEN).
+#   This file will automatically pick them up at runtime.
 # ============================================================
 
 import os
 
-# python-dotenv se local .env file load karo (agar exists)
+# Load variables from a local .env file if one exists (development only).
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
-    pass  # dotenv na ho toh bhi chalega — env vars seedhe OS se aa sakte hain
+    pass  # python-dotenv is optional; env vars can also be set directly in the OS
 
 
 def _env(key: str, default: str = "") -> str:
-    """Environment variable safely read karo."""
+    """Read an environment variable, stripping surrounding whitespace."""
     return os.environ.get(key, default).strip()
 
 
@@ -40,6 +41,11 @@ OPENROUTER_API_KEY = _env("OPENROUTER_API_KEY")
 # ── LINKEDIN ─────────────────────────────────────────────────
 LINKEDIN_ACCESS_TOKEN    = _env("LINKEDIN_ACCESS_TOKEN")
 LINKEDIN_ORGANIZATION_ID = _env("LINKEDIN_ORGANIZATION_ID")
+
+# Personal profile fallback (jab tak company page approval na mile)
+# LINKEDIN_PERSON_URN auto-fetch hoga token se — manually set karna zaroori nahi
+LINKEDIN_PERSON_URN           = _env("LINKEDIN_PERSON_URN")
+LINKEDIN_FALLBACK_TO_PERSONAL = _env("LINKEDIN_FALLBACK_TO_PERSONAL", "true").lower() == "true"
 
 # ── TWITTER (optional) ───────────────────────────────────────
 TWITTER_API_KEY              = _env("TWITTER_API_KEY")
@@ -76,8 +82,8 @@ def _warn_if_missing():
         missing.append("GEMINI_API_KEY (required for ALL AI features)")
     if not LINKEDIN_ACCESS_TOKEN:
         missing.append("LINKEDIN_ACCESS_TOKEN (required for auto-posting)")
-    if not LINKEDIN_ORGANIZATION_ID:
-        missing.append("LINKEDIN_ORGANIZATION_ID (required for auto-posting)")
+    if not LINKEDIN_ORGANIZATION_ID and not LINKEDIN_PERSON_URN:
+        missing.append("LINKEDIN_ORGANIZATION_ID ya LINKEDIN_PERSON_URN (ek zaroori hai)")
 
     if missing and _env("SUPPRESS_CONFIG_WARNINGS") != "1":
         print("⚠️  Missing environment variables:")

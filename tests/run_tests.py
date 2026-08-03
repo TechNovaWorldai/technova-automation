@@ -1,16 +1,24 @@
 """
-TechNova World — Complete Test + Validation Suite v3.0
-Tests:
-  - Unit tests (all modules)
-  - Integration tests
-  - Load tests (API stress)
-  - Hang detection (timeout killer)
-  - Quality validation
-  - Anti-spam validation
-  - Algo compliance tests
+TechNova World — Complete Test & Validation Suite v3.0
 
-Run: python tests/run_tests.py
-Run specific: python tests/run_tests.py --suite unit
+Covers:
+  - Unit tests        : all core modules (utils, algo_engine, etc.)
+  - Integration tests : API mocking for Gemini, LinkedIn, RSS feeds
+  - Load tests        : scorer throughput and queue capacity benchmarks
+  - Hang detection    : timeout simulation to guard against API deadlocks
+  - Quality validation: end-to-end pipeline content-quality checks
+  - Anti-spam check   : validates spam detector catches bad content
+  - Algo compliance   : verifies platform scoring rules are correct
+  - Brand voice       : validates tone, banned phrases, and deep-research pipeline
+  - Deployment        : config env-var safety, gitignore secrets, automation scripts
+  - AI client         : model fallback chain (Gemini Flash -> Pro -> OpenRouter)
+  - Research agent    : source citation accuracy and capping logic
+  - Web dashboard     : Flask route contracts, batch lifecycle, CSV export
+
+Usage:
+  python tests/run_tests.py              # run all suites
+  python tests/run_tests.py --suite unit # run a single suite
+  python tests/run_tests.py --fast       # skip load tests
 """
 
 import sys
@@ -162,7 +170,7 @@ report = TestReport()
 
 
 def run_test(name: str, suite: str, fn, *args, **kwargs) -> TestResult:
-    """Single test run karo with timing + error capture."""
+    """Execute a single test function, capture its result, timing, and any error."""
     start = time.perf_counter()
     try:
         fn(*args, **kwargs)

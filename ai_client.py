@@ -1,16 +1,18 @@
 """
 TechNova World — Unified AI Client v5.0
-Single entry point for ALL AI calls in the app.
 
-Fallback chain (in order):
-  1. Gemini 2.5 Flash    (fast, free tier, primary)
-  2. Gemini 2.5 Pro       (better quality, same free key, used if Flash fails)
-  3. OpenRouter free pool (different provider entirely — survives Google outages)
+Single entry point for all AI text-generation calls in the application.
 
-Why this matters:
-  Gemini 1.5 models were SHUT DOWN by Google (404 errors) — this is exactly
-  why the old app broke. Models get deprecated. A fallback chain across
-  TWO PROVIDERS means one company's decision can't break your automation.
+Fallback chain (tried in order):
+  1. Gemini 2.5 Flash    — fast, free-tier primary model
+  2. Gemini 2.5 Pro      — higher quality, same API key, used if Flash fails
+  3. OpenRouter free pool — different provider entirely; survives Google outages
+
+Background:
+  Gemini 1.5 models were shut down by Google (404 errors), which is exactly
+  why the old automation broke. Models get deprecated without warning. A
+  two-provider fallback chain means one vendor’s decision cannot break the
+  entire pipeline.
 """
 
 import time
@@ -47,7 +49,15 @@ OPENROUTER_FREE_MODELS = [
 # ════════════════════════════════════════════════════════════
 
 def _call_gemini_model(model: str, prompt: str, max_tokens: int) -> str:
-    """Single Gemini model call — raises on any failure."""
+    """Make a single synchronous request to a Gemini model.
+
+    Raises a typed exception on known HTTP error codes so the caller
+    can decide whether to fall through to the next model:
+      LookupError    — model not found / deprecated (HTTP 404)
+      IOError        — rate limited (HTTP 429)
+      PermissionError — API key invalid or expired (HTTP 403)
+      ValueError     — bad request or safety filter triggered (HTTP 400)
+    """
     if not cfg.GEMINI_API_KEY:
         raise ValueError("GEMINI_API_KEY not set")
 
@@ -93,7 +103,11 @@ def _call_gemini_model(model: str, prompt: str, max_tokens: int) -> str:
 # ════════════════════════════════════════════════════════════
 
 def _call_openrouter_model(model: str, prompt: str, max_tokens: int) -> str:
-    """Single OpenRouter model call — raises on any failure."""
+    """Make a single synchronous request to an OpenRouter model.
+
+    Raises IOError on rate limits and PermissionError on auth failures,
+    matching the same exception contract as ``_call_gemini_model``.
+    """
     if not cfg.OPENROUTER_API_KEY:
         raise ValueError("OPENROUTER_API_KEY not set")
 
@@ -135,16 +149,21 @@ def _call_openrouter_model(model: str, prompt: str, max_tokens: int) -> str:
 def generate(prompt: str, max_tokens: int = 1300,
              prefer_quality: bool = False) -> Result:
     """
-    Generate text using the full fallback chain.
+    Generate text using the full provider fallback chain.
+
+    Tries every Gemini model first, then falls through to OpenRouter
+    free models if all Gemini calls fail. Returns a ``Result`` so
+    callers never need to catch exceptions.
 
     Args:
-        prompt:         The prompt to send
-        max_tokens:      Max output tokens
-        prefer_quality:  If True, tries Gemini 2.5 Pro FIRST (slower, better)
+        prompt:          The user / system prompt to send.
+        max_tokens:      Maximum number of output tokens.
+        prefer_quality:  If True, tries Gemini 2.5 Pro first (slower, better
+                         quality); otherwise Flash is tried first.
 
     Returns:
-        Result with .data = generated text, .data also includes
-        which model actually answered (for transparency/debugging)
+        Result with ``.data = {"text": str, "model_used": str}`` on success,
+        or ``Result.fail(error)`` if every provider is exhausted.
     """
     attempts_log = []
 
@@ -200,9 +219,11 @@ def generate(prompt: str, max_tokens: int = 1300,
 def generate_text(prompt: str, max_tokens: int = 1300,
                    prefer_quality: bool = False) -> Optional[str]:
     """
-    Convenience wrapper — returns just the text string (or None).
-    This matches the old _gemini() function signature so existing
-    code in ai_generator.py / deep_research.py keeps working.
+    Convenience wrapper that returns a plain string instead of a Result.
+
+    Returns None if all providers fail. This signature is backwards-compatible
+    with the old ``_gemini()`` helper used in ``ai_generator.py`` and
+    ``deep_research.py``.
     """
     result = generate(prompt, max_tokens, prefer_quality)
     if result:
@@ -211,15 +232,18 @@ def generate_text(prompt: str, max_tokens: int = 1300,
 
 
 def which_model_answered(prompt: str, max_tokens: int = 100) -> str:
-    """Debug helper — tells you which model/provider is currently working."""
+    """Debug helper — returns the name of the first model that currently responds."""
     result = generate(prompt, max_tokens)
     return result.data["model_used"] if result else f"NONE WORKING ({result.error})"
 
 
 def check_all_providers() -> Dict[str, bool]:
     """
-    Health check — tests each provider with a tiny prompt.
-    Used by the dashboard's "Connection Status" panel.
+    Health-check every configured AI provider with a minimal test prompt.
+
+    Used by the web dashboard’s “Connection Status” panel to show which
+    models are currently reachable.  Returns a dict of model names to
+    availability booleans (None = not configured).
     """
     status = {}
     test_prompt = "Reply with exactly one word: OK"

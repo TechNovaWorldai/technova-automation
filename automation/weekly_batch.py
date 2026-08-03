@@ -1,13 +1,17 @@
 """
-TechNova World — Weekly Batch Generator (non-interactive)
-GitHub Actions Sunday cron se call hota hai.
-Koi input() nahi — fully automated.
+TechNova World — Weekly Batch Content Generator (non-interactive)
 
-Flow:
-  1. TOPICS_INPUT env var se topics lo (ya trending auto-fetch karo)
-  2. 5 din ka content generate karo (algo-aware + brand voice)
-  3. LinkedIn posts ko queue mein daal do (Mon-Fri auto-post hoga)
-  4. Twitter/Medium content generated/ mein save karo (manual use ke liye)
+Invoked by a GitHub Actions cron job every Sunday.
+Requires no interactive input — fully automated end-to-end.
+
+Pipeline:
+  1. Read topics from the TOPICS_INPUT environment variable
+     (comma-separated), or auto-fetch trending AI topics via the AI client.
+  2. Generate five days of content (Mon–Fri) with algorithm-aware prompts
+     and brand-voice compliance.
+  3. Queue the LinkedIn posts for automatic Mon–Fri publishing.
+  4. Save Twitter and Medium content to generated/ for manual scheduling
+     (e.g. via Buffer or Medium’s own editor).
 """
 
 import sys
@@ -24,7 +28,13 @@ import config as cfg
 
 
 def get_topics() -> list:
-    """Topics environment variable se lo, ya trending fetch karo."""
+    """Return a list of five content topics for the week.
+
+    Reads from the ``TOPICS_INPUT`` environment variable (comma-separated).
+    If fewer than five topics are provided, falls back to automatically
+    fetching trending AI topics via the AI client, and if that also fails,
+    uses a built-in set of generic evergreen topics.
+    """
     raw = os.environ.get("TOPICS_INPUT", "").strip()
     if raw:
         topics = [t.strip() for t in raw.split(",") if t.strip()]

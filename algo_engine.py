@@ -1,10 +1,21 @@
 """
 TechNova World — Algorithm Rules Engine v3.0
-LinkedIn + Twitter/X + Medium ke algorithm rules
-Research-based, 2024-2025 current
 
-Sources: LinkedIn Engineering Blog, Twitter API docs,
-         Medium Partner Program data, creator studies
+Encodes the current (2024-2025) ranking algorithms for LinkedIn, Twitter/X,
+and Medium as structured data and scoring functions.
+
+Data sources:
+  LinkedIn Engineering Blog, Twitter/X API documentation,
+  Medium Partner Program guidelines, independent creator studies.
+
+Public API:
+  score_linkedin_post()  — returns QualityScore (0-100) for a LinkedIn post
+  score_twitter_post()   — returns QualityScore (0-100) for a tweet
+  score_medium_article() — returns QualityScore (0-100) for a Medium article
+  check_spam()           — detects spam signals and fake engagement patterns
+  check_value()          — measures informational value vs filler content
+  build_*_prompt()       — build algorithm-aware generation prompts
+  print_score_report()   — pretty-print a QualityScore to stdout
 """
 
 from dataclasses import dataclass, field
@@ -244,7 +255,7 @@ class QualityScore:
 
 
 def score_linkedin_post(text: str) -> QualityScore:
-    """LinkedIn post ko 0-100 score do."""
+    """Score a LinkedIn post on a 0-100 scale using the 2024/2025 algorithm rules."""
     score   = 0
     passed  = []
     failed  = []
@@ -357,7 +368,7 @@ def score_linkedin_post(text: str) -> QualityScore:
 
 
 def score_twitter_post(text: str, is_thread: bool = False) -> QualityScore:
-    """Twitter/X post ko 0-100 score do."""
+    """Score a Twitter/X post on a 0-100 scale using the 2024 algorithm rules."""
     score    = 0
     passed   = []
     failed   = []
@@ -454,7 +465,7 @@ def score_twitter_post(text: str, is_thread: bool = False) -> QualityScore:
 
 
 def score_medium_article(title: str, content: str, subtitle: str = "") -> QualityScore:
-    """Medium article ko 0-100 score do."""
+    """Score a Medium article on a 0-100 scale for read ratio, SEO, and distribution."""
     passed   = []
     failed   = []
     warnings = []
@@ -608,10 +619,18 @@ FAKE_ENGAGEMENT_PHRASES = [
 
 def check_spam(text: str) -> Dict:
     """
-    Spam aur fake engagement patterns detect karo.
+    Detect spam patterns and fake-engagement phrases in a piece of content.
 
-    Returns:
-        Dict with is_spam, spam_signals, fake_engagement_signals, safe_to_post
+    Returns a dict with keys:
+      safe_to_post           — True if neither spam nor excessive caps detected
+      is_spam                — True if known spam phrases or word repetition found
+      has_fake_engagement    — True if fake-engagement phrases ("RT if you agree") found
+      spam_signals           — list of matched spam phrases
+      fake_engagement_signals— list of matched fake-engagement phrases
+      repeated_words         — dict of words appearing 4+ times
+      excessive_caps         — True if >30% of characters are uppercase
+      emoji_count            — total emoji character count
+      too_many_emojis        — True if more than 8 emojis found
     """
     text_lower = text.lower()
 
@@ -672,7 +691,12 @@ VALUE_INDICATORS = {
 }
 
 def check_value(text: str) -> Dict:
-    """Content mein real value hai ya nahi check karo."""
+    """Assess the informational value of a piece of content.
+
+    Returns a dict with a ``value_score`` (0-100) and a human-readable
+    ``verdict`` string, plus detailed hit lists for high- and low-value
+    indicator phrases found in the text.
+    """
     text_lower = text.lower()
 
     high = [v for v in VALUE_INDICATORS["high_value"] if v in text_lower]

@@ -1,6 +1,14 @@
 """
 TechNova World — Core Utilities v2.0
-Logging, retry logic, error handling, validation
+
+Provides shared infrastructure used across the entire automation pipeline:
+  - Structured logging with colour-coded console output and file rotation
+  - Retry decorator with configurable exponential back-off
+  - Result wrapper for safe, exception-free return values
+  - Config validation helpers
+  - JSON and plain-text file I/O helpers
+  - QueueManager for persisting and scheduling social-media posts
+  - ASCII progress bar for long-running batch operations
 """
 
 import os
@@ -68,8 +76,19 @@ logger = setup_logging()
 # ── RETRY DECORATOR ──────────────────────────────────────────
 def retry(max_tries: int = 3, delay: float = 5.0, exceptions=(Exception,)):
     """
-    Automatic retry decorator with exponential backoff.
-    Usage: @retry(max_tries=3, delay=5)
+    Decorator that automatically retries a function on failure.
+
+    Uses exponential back-off between attempts (delay * 2^attempt).
+    Raises the last exception if every attempt fails.
+
+    Args:
+        max_tries:  Maximum number of attempts (default: 3).
+        delay:      Base delay in seconds before the first retry (default: 5).
+        exceptions: Tuple of exception types to catch and retry on.
+
+    Usage:
+        @retry(max_tries=3, delay=5)
+        def call_api(): ...
     """
     def decorator(func: Callable):
         @functools.wraps(func)
@@ -98,7 +117,12 @@ def retry(max_tries: int = 3, delay: float = 5.0, exceptions=(Exception,)):
 
 # ── RESULT WRAPPER ───────────────────────────────────────────
 class Result:
-    """Standard result object — success or error, no surprises."""
+    """Lightweight result object that wraps either a success value or an error message.
+
+    Eliminates bare exception propagation across module boundaries.
+    Use ``Result.success(data)`` on the happy path and ``Result.fail(error)``
+    on the error path.  Callers can do a simple ``if result:`` truthiness check.
+    """
     def __init__(self, ok: bool, data: Any = None, error: str = ""):
         self.ok    = ok
         self.data  = data
@@ -123,8 +147,10 @@ class Result:
 # ── CONFIG VALIDATION ────────────────────────────────────────
 def validate_config() -> dict:
     """
-    config.py keys validate karo.
-    Returns dict of what is set / missing.
+    Validate that required config.py keys are present and look plausible.
+
+    Returns a dict mapping each config key name to a status string
+    (e.g. '\u2705 Set' or '\u274c Missing').
     """
     try:
         import config as cfg
@@ -211,6 +237,14 @@ def load_text(path: str) -> Optional[str]:
 QUEUE_PATH = "queue/posts_queue.json"
 
 class QueueManager:
+    """Persist and manage a JSON-backed queue of social-media posts.
+
+    Each queue item stores the platform, content, scheduling metadata,
+    current status (pending / posted / failed), and retry count.
+    The file is read and written on every operation so that multiple
+    processes can share the same queue safely.
+    """
+
     def __init__(self, path: str = QUEUE_PATH):
         self.path = path
         Path(path).parent.mkdir(exist_ok=True)

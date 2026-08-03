@@ -1,11 +1,14 @@
 """
 TechNova World — Brand Voice Engine v3.1
-TechNova World ki apni unique writing identity define karta hai.
-Generic AI content ko brand-specific bananeke liye.
 
-Why this matters:
-Famous brands (Anthropic, Google) sound consistent because they have
-a documented voice. This module makes TechNova World do the same.
+Defines TechNova World’s distinct writing identity and enforces it
+across all AI-generated content.
+
+Purpose:
+  Leading brands (Anthropic, Google) maintain a consistent, recognisable voice
+  because it is explicitly documented.  This module does the same for
+  TechNova World — storing the voice configuration, scoring compliance,
+  and injecting context strings into every generation prompt.
 """
 
 import json
@@ -87,7 +90,7 @@ VOICE_FILE = "assets/brand_voice.json"
 # ════════════════════════════════════════════════════════════
 
 def load_voice() -> Dict:
-    """Saved brand voice load karo, ya default use karo."""
+    """Load the saved brand voice configuration, or return the default if none exists."""
     voice = load_json(VOICE_FILE, default=None)
     if voice:
         return voice
@@ -96,7 +99,7 @@ def load_voice() -> Dict:
 
 
 def save_voice(voice: Dict) -> bool:
-    """Brand voice save karo."""
+    """Persist the brand voice configuration to disk."""
     Path("assets").mkdir(exist_ok=True)
     ok = save_json(VOICE_FILE, voice)
     if ok:
@@ -106,8 +109,10 @@ def save_voice(voice: Dict) -> bool:
 
 def update_voice_field(path: str, value) -> bool:
     """
-    Voice ka koi field update karo.
-    Example: update_voice_field("banned_phrases", ["new phrase"])
+    Update a nested field inside the brand voice configuration.
+
+    Example:
+        update_voice_field("banned_phrases", ["new phrase"])
     """
     voice = load_voice()
     keys = path.split(".")
@@ -119,7 +124,7 @@ def update_voice_field(path: str, value) -> bool:
 
 
 def add_signature_phrase(phrase: str) -> bool:
-    """Naya signature phrase add karo."""
+    """Append a new signature phrase to the brand voice configuration."""
     voice = load_voice()
     if phrase not in voice["signature_phrases"]:
         voice["signature_phrases"].append(phrase)
@@ -128,7 +133,7 @@ def add_signature_phrase(phrase: str) -> bool:
 
 
 def add_banned_phrase(phrase: str) -> bool:
-    """Naya banned phrase add karo."""
+    """Append a new banned phrase to the brand voice configuration."""
     voice = load_voice()
     if phrase not in voice["banned_phrases"]:
         voice["banned_phrases"].append(phrase)
@@ -142,8 +147,10 @@ def add_banned_phrase(phrase: str) -> bool:
 
 def build_voice_context() -> str:
     """
-    Brand voice ko prompt-ready text mein convert karo.
-    Yeh string har content generation prompt mein inject hoga.
+    Serialise the brand voice configuration into a prompt-ready string.
+
+    The returned string is injected into every content-generation prompt
+    so the AI respects tone, banned phrases, and content principles.
     """
     v = load_voice()
 
@@ -181,10 +188,15 @@ BAD EXAMPLE (never write like this):
 
 def check_voice_compliance(text: str) -> Dict:
     """
-    Generated content brand voice follow karta hai ya nahi check karo.
+    Evaluate whether generated content adheres to the brand voice guidelines.
 
-    Returns:
-        Dict with violations, score, suggestions
+    Returns a dict with:
+      voice_score  — 0-100 compliance score
+      violations   — list of banned phrases found in the text
+      vague_claims — list of unsubstantiated superlative claims found
+      has_number   — whether a specific number is present (credibility signal)
+      suggestions  — human-readable list of fixes
+      verdict      — emoji-prefixed summary string
     """
     v = load_voice()
     text_lower = text.lower()
@@ -232,14 +244,15 @@ def check_voice_compliance(text: str) -> Dict:
 
 def rewrite_in_brand_voice(text: str, gemini_fn) -> str:
     """
-    Generic content ko brand voice mein rewrite karo.
+    Rewrite generic content to conform to the TechNova World brand voice.
 
     Args:
-        text: Original generic content
-        gemini_fn: Gemini call function (ai_generator._gemini ya similar)
+        text:       The original draft content to rewrite.
+        gemini_fn:  Any callable that accepts a prompt string and returns text
+                    (e.g. ``ai_generator._gemini`` or ``ai_client.generate_text``).
 
     Returns:
-        Rewritten content
+        The rewritten content string, or the original text if the AI call fails.
     """
     voice_ctx = build_voice_context()
     compliance = check_voice_compliance(text)

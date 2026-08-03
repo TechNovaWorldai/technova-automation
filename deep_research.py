@@ -1,19 +1,17 @@
 """
 TechNova World — Deep Research Mode v5.0
-Senior writer jaisa multi-step content process:
-  1. Research outline (facts, angles, data points needed)
-  2. Gather specifics (numbers, examples, comparisons)
-  3. Draft with depth (not surface-level)
-  4. Self-critique pass
-  5. Final polish
 
-Why this matters:
-Single-prompt generation gives surface-level content.
-Multi-step process forces the AI to "think" like a researcher first.
+Implements a four-step, researcher-style content generation pipeline
+that produces significantly higher-quality output than single-prompt generation:
 
-v5.0: Ab ai_client.py ke through generate karta hai (Gemini 2.5 +
-OpenRouter fallback) — purana hardcoded gemini-1.5-flash hata diya
-(woh model Google ne deprecate kar diya tha, isliye fail ho raha tha).
+  Step 1 — Research outline   : plan what facts, angles, and examples are needed
+  Step 2 — Gather specifics   : generate concrete numbers, comparisons, scenarios
+  Step 3 — Deep draft         : write full content using the research as source material
+  Step 4 — Self-critique pass : AI editor refines the draft for credibility and tone
+
+v5.0 change: generation is now routed through ``ai_client.py`` (Gemini 2.5 +
+OpenRouter fallback chain).  The previous hardcoded ``gemini-1.5-flash`` model
+was deprecated by Google and caused repeated 404 failures.
 """
 
 import re
@@ -28,7 +26,7 @@ import config as cfg
 
 
 def _gemini(prompt: str, max_tokens: int = 1500) -> Optional[str]:
-    """Naam purana rakha — ab ai_client ke fallback chain se generate hota hai."""
+    """Delegate to ``ai_client.generate_text()`` via the full fallback chain."""
     return generate_text(prompt, max_tokens=max_tokens)
 
 
@@ -38,8 +36,11 @@ def _gemini(prompt: str, max_tokens: int = 1500) -> Optional[str]:
 
 def step1_research_outline(topic: str, audience: str) -> Optional[str]:
     """
-    Pehla step — senior writer jaisa "research plan" banao.
-    Yeh batata hai: kya specific facts, angles, examples chahiye.
+    Step 1 of 4 — generate a structured research plan before any content is written.
+
+    Asks the model to list the specific facts, example scenarios, common
+    misconceptions, honest downsides, and unique angle needed to produce
+    credible, non-generic content on this topic.
     """
     logger.info(f"  🔬 Step 1/4: Research outline — {topic[:40]}")
 
@@ -76,9 +77,11 @@ Be specific. Don't write the article yet — just the research plan."""
 
 def step2_specifics(topic: str, outline: str) -> Optional[str]:
     """
-    Doosra step — outline ke based pe specific details generate karo.
-    (Note: yeh Gemini ke training data se hai, real-time search nahi.
-     Critical/recent facts ke liye search_agent.py use karo.)
+    Step 2 of 4 — populate the research outline with concrete specifics.
+
+    Note: content comes from the model’s training data, not live search.
+    For real-time or critically time-sensitive facts, use ``search_agent.py``
+    before calling this step.
     """
     logger.info(f"  📊 Step 2/4: Gathering specifics")
 
@@ -105,9 +108,7 @@ of inventing a fake precise number."""
 
 def step3_deep_draft(topic: str, specifics: str, platform: str,
                       brand: str, audience: str) -> Optional[str]:
-    """
-    Teesra step — specifics + brand voice se actual draft banao.
-    """
+    """Step 3 of 4 — write the full content draft using research specifics as source material."""
     logger.info(f"  ✍️  Step 3/4: Writing deep draft ({platform})")
 
     voice_ctx = build_voice_context()
@@ -146,9 +147,7 @@ Return ONLY the final content."""
 # ════════════════════════════════════════════════════════════
 
 def step4_critique_and_polish(draft: str, platform: str) -> Optional[str]:
-    """
-    Chautha step — AI khud apna kaam critique kare jaise editor karta hai.
-    """
+    """Step 4 of 4 — run a self-critique pass to sharpen credibility and remove filler."""
     logger.info(f"  🔍 Step 4/4: Self-critique + polish")
 
     voice_compliance = check_voice_compliance(draft)
@@ -185,17 +184,19 @@ def deep_research_generate(
     save_steps: bool = True,
 ) -> Result:
     """
-    Full 4-step deep research pipeline.
+    Run the full four-step deep-research pipeline and return the polished result.
 
     Args:
-        topic:    Content topic
-        platform: linkedin / medium / twitter_thread
-        brand:    Brand name (default from config)
-        audience: Target audience (default from config)
-        save_steps: Saare intermediate steps generated/ mein save karo
+        topic:      The content topic to generate about.
+        platform:   Target platform: ``linkedin``, ``medium``, or ``twitter_thread``.
+        brand:      Brand name to use in prompts (defaults to ``config.BRAND_NAME``).
+        audience:   Target audience description (defaults to ``config.AUDIENCE``).
+        save_steps: If True, write all intermediate step outputs and the final
+                    result to ``generated/deep_research/``.
 
     Returns:
-        Result with final polished content + all intermediate steps
+        ``Result`` with ``.data = {"final": str, "steps": dict, "compliance": dict}``
+        on success, or ``Result.fail(error)`` if any step fails.
     """
     brand    = brand or cfg.BRAND_NAME
     audience = audience or cfg.AUDIENCE
