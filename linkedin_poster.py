@@ -238,27 +238,28 @@ def _do_post(text: str, image_path: str, author_urn: str, label: str) -> Result:
                 "then update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file."
             )
         elif r.status_code == 403:
-            return Result.fail(
-                f"403 Permission denied for {label}.\n"
+            msg = (
+                f"403 Permission denied for {label}." + "\n"
                 "Likely cause: your OAuth token lacks the required scope (w_member_social for\n"
                 "personal posts, rw_organization_social for company page posts).\n"
                 "Fix: regenerate the token with the correct scopes enabled."
             )
+            return Result.fail(msg)
         elif r.status_code == 422:
             msg = r.json().get('message', r.text[:200])
-            return Result.fail(f"422 Validation error: {msg}")
+            return Result.fail("422 Validation error: " + str(msg))
         else:
-            return Result.fail(f"HTTP {r.status_code}: {r.text[:200]}")
+            return Result.fail("HTTP " + str(r.status_code) + ": " + str(r.text[:200]))
 
     except requests.exceptions.Timeout:
         return Result.fail(
-            f"Request timed out after {cfg.API_TIMEOUT}s posting to {label}. "
-            "LinkedIn may be slow — the job will retry automatically."
+            "Request timed out after " + str(cfg.API_TIMEOUT) + "s posting to " + str(label) + ". "
+            "LinkedIn may be slow -- the job will retry automatically."
         )
     except requests.exceptions.ConnectionError:
         return Result.fail("Network error: could not reach api.linkedin.com. Check your internet connection.")
     except Exception as exc:
-        return Result.fail(f"Unexpected error posting to {label}: {exc}")
+        return Result.fail("Unexpected error posting to " + str(label) + ": " + str(exc))
 
 
 def diagnose_linkedin() -> None:
@@ -276,10 +277,15 @@ def diagnose_linkedin() -> None:
     org   = cfg.LINKEDIN_ORGANIZATION_ID
     urn   = cfg.LINKEDIN_PERSON_URN
 
-    print(f"\n  LINKEDIN_ACCESS_TOKEN        : {'[SET] (' + token[:8] + '...)' if token else '[NOT SET]'}")
-    print(f"  LINKEDIN_ORGANIZATION_ID     : {org if org else '[NOT SET] (personal-only mode)'}")
-    print(f"  LINKEDIN_PERSON_URN          : {urn if urn else '[NOT SET] (will auto-fetch)'}")
-    print(f"  LINKEDIN_FALLBACK_TO_PERSONAL: {'Enabled' if cfg.LINKEDIN_FALLBACK_TO_PERSONAL else 'Disabled'}")
+    token_info = '[SET] (' + token[:8] + '...)' if token else '[NOT SET]'
+    org_info = org if org else '[NOT SET] (personal-only mode)'
+    urn_info = urn if urn else '[NOT SET] (will auto-fetch)'
+    fallback_info = 'Enabled' if cfg.LINKEDIN_FALLBACK_TO_PERSONAL else 'Disabled'
+
+    print("\n  LINKEDIN_ACCESS_TOKEN        : " + token_info)
+    print("  LINKEDIN_ORGANIZATION_ID     : " + org_info)
+    print("  LINKEDIN_PERSON_URN          : " + urn_info)
+    print("  LINKEDIN_FALLBACK_TO_PERSONAL: " + fallback_info)
 
     if not token:
         print("\n  [FATAL] No access token. Cannot proceed.")
@@ -289,19 +295,21 @@ def diagnose_linkedin() -> None:
 
     print("\n  Testing connection ...")
     ok = check_linkedin_connection()
-    print(f"  Connection check : {'[PASS]' if ok else '[FAIL]'}")
+    status_str = '[PASS]' if ok else '[FAIL]'
+    print("  Connection check : " + status_str)
 
     if not urn:
         print("  Auto-fetching Person URN ...")
         fetched = _fetch_person_urn()
-        print(f"  Person URN       : {fetched if fetched else '[FAIL] Could not fetch'}")
+        urn_str = fetched if fetched else '[FAIL] Could not fetch'
+        print("  Person URN       : " + urn_str)
     else:
         fetched = urn
 
     if org:
-        print(f"\n  Posting target   : Company page (urn:li:organization:{org})")
+        print("\n  Posting target   : Company page (urn:li:organization:" + str(org) + ")")
     elif fetched:
-        print(f"\n  Posting target   : Personal profile ({fetched})")
+        print("\n  Posting target   : Personal profile (" + str(fetched) + ")")
     else:
         print("\n  [FAIL] No posting target available. Set LINKEDIN_ORGANIZATION_ID or LINKEDIN_PERSON_URN.")
 
