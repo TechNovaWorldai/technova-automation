@@ -110,7 +110,9 @@ def retry(max_tries: int = 3, delay: float = 5.0, exceptions=(Exception,)):
                         logger.error(
                             f"❌ {func.__name__} failed after {max_tries} attempts: {e}"
                         )
-            raise last_error
+            raise last_error if last_error is not None else RuntimeError(
+                f"{func.__name__} exhausted {max_tries} retries"
+            )
         return wrapper
     return decorator
 

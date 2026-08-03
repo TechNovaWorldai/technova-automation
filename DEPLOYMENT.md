@@ -1,237 +1,250 @@
-# 🌐 TechNova World — Complete Deployment Guide v4.0
+# TechNova World — Complete Deployment Guide v4.0
 
-Yeh guide tumhe step-by-step batayega: GitHub pe push kaise karo, secrets
-kaise safe rakho, aur 24/7 automation kaise activate karo (free).
-
----
-
-## ⚠️ Pehle yeh samjho — bahut zaroori
-
-**24/7 ka matlab "ek server hamesha chal raha hai" nahi hai (free mein yeh
-nahi milta). Iska matlab hai: "scheduled jobs jo automatically, bina tumhare
-laptop ke, sahi time pe chalte hain."**
-
-- LinkedIn pe Mon-Fri 9PM IST post → GitHub Actions cron job chalega
-- Sunday content batch generate → GitHub Actions cron job chalega
-- Tumhara laptop band ho, sleep mode mein ho — koi farak nahi padega
-- Yeh GitHub ke servers pe chalta hai, bilkul free (2000 min/month tak)
+This guide walks you through every step required to push TechNova World Automation to GitHub, secure your secrets, and activate fully-automated 24/7 LinkedIn posting — all for free.
 
 ---
 
-## 📋 Part 1 — GitHub Pe Push Karna
+## ⚡ What "24/7 Automation" Actually Means
 
-### Step 1: Naya repository banao
+There is **no always-on server** running (that's not available on a free tier). Instead, GitHub Actions cron jobs wake up at the exact scheduled time, run the relevant script, and shut down — whether your laptop is on or off.
 
-1. github.com pe jaao → "New repository"
-2. Name: `technova-automation` (ya jo chaho)
-3. **Private** select karo (recommended — apna business logic public mat rakho)
-4. "Create repository" click karo
+- **LinkedIn post (Mon–Fri, 9 PM IST)** → `post-linkedin.yml` wakes up, posts, exits
+- **Weekly content batch (Sunday, 8 PM IST)** → `weekly-batch.yml` generates 5 days of content, exits
+- **GitHub Actions runs on GitHub's infrastructure** — 2,000 free minutes/month, well above the ~15 min/week this app uses
 
-### Step 2: Apne computer pe yeh folder push karo
+---
+
+## Part 1 — Push to GitHub
+
+### Step 1 — Create a New Repository
+
+1. Go to [github.com](https://github.com) → **"New repository"**
+2. Name it `technova-automation` (or any name you prefer)
+3. Set visibility to **Private** (recommended — keeps your business logic private)
+4. Click **"Create repository"**
+
+### Step 2 — Push Your Local Code
 
 ```bash
-cd path/to/technova-deploy
+cd path/to/technova-world-automation
 git init
 git add .
-git commit -m "Initial commit - TechNova World automation v4.0"
+git commit -m "Initial commit — TechNova World Automation v4.0"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/technova-automation.git
 git push -u origin main
 ```
 
-> 💡 Agar git command line se comfortable nahi ho, **GitHub Desktop** use
-> karo — "Add Local Repository" → folder select karo → "Publish repository"
+> 💡 Prefer a GUI? Use **GitHub Desktop** — "Add Local Repository" → select the folder → "Publish Repository"
 
-### Step 3: Verify karo ki secrets push NAHI hue
+### Step 3 — Verify No Secrets Were Committed
 
 ```bash
 git log --all --full-history -- .env
 ```
 
-Yeh **kuch return nahi karna chahiye**. Agar kuch dikhe, turant `.env` file
-delete karke dobara commit karo, aur apni saari keys **regenerate** karo
-(purani keys ab compromised maan lo).
+This should return **nothing**. If it returns any output, delete the `.env` file, commit again, and **immediately regenerate every API key you have** — the old ones are compromised.
 
 ---
 
-## 🔐 Part 2 — GitHub Secrets Setup (Sabse Important Step)
+## Part 2 — Setting Up GitHub Secrets (Critical)
 
-API keys **kabhi code mein nahi jaati** — GitHub ke encrypted "Secrets"
-vault mein jaati hain.
+API keys must **never** appear in source code. GitHub provides an encrypted Secrets vault that only your Actions workflows can access.
 
-1. Apne repo pe jaao → **Settings** tab
+1. Go to your repository → **Settings** tab
 2. Left sidebar: **Secrets and variables** → **Actions**
-3. **"New repository secret"** click karo — yeh 4 secrets banao:
+3. Click **"New repository secret"** and create each of the following:
 
-| Secret Name | Value kahan se milegi |
+| Secret Name | Where to get the value |
 |---|---|
-| `GEMINI_API_KEY` | aistudio.google.com → Get API Key |
-| `OPENROUTER_API_KEY` | openrouter.ai → Sign up free → Keys (optional but recommended) |
-| `LINKEDIN_ACCESS_TOKEN` | developer.linkedin.com → OAuth Playground |
-| `LINKEDIN_ORGANIZATION_ID` | LinkedIn Company Page URL se number |
+| `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com) → Get API Key |
+| `OPENROUTER_API_KEY` | [openrouter.ai](https://openrouter.ai) → Sign up free → Keys *(optional but recommended)* |
+| `LINKEDIN_ACCESS_TOKEN` | [developer.linkedin.com/tools/oauth](https://developer.linkedin.com/tools/oauth) |
+| `LINKEDIN_ORGANIZATION_ID` | Your LinkedIn Company Page URL — the numeric ID in the URL |
 
-Each ke liye: Name daalo (exact wahi naam upar table mein hai) → Value
-paste karo → "Add secret"
+For each: enter the **exact name** from the table above (case-sensitive) → paste the value → click **"Add secret"**.
 
-> 🔒 Yeh secrets sirf GitHub Actions workflows access kar sakte hain.
-> Koi insaan, koi log, koi public jagah — yeh values kabhi nahi dikhengi.
+> 🔒 These values are encrypted at rest and only ever visible to your Actions workflows. They never appear in logs.
 
 ---
 
-## ⚙️ Part 3 — GitHub Actions Activate Karna
+## Part 3 — Activating GitHub Actions Workflows
 
-Repo mein already 3 workflow files hain (`.github/workflows/`):
+Your repository already contains three workflow files in `.github/workflows/`:
 
-| File | Kya karta hai | Kab chalta hai |
+| Workflow File | What it does | When it runs |
 |---|---|---|
-| `run-tests.yml` | Saare 69 tests chalata hai | Har push pe automatically |
-| `weekly-batch.yml` | Poori week ka content generate | Sunday 8 PM IST |
-| `post-linkedin.yml` | Queue se LinkedIn pe post karta hai | Mon-Fri 9 PM IST |
+| `run-tests.yml` | Runs all 104 automated tests | On every `git push` |
+| `weekly-batch.yml` | Generates 5 days of content, queues LinkedIn posts | Every Sunday, 8 PM IST |
+| `post-linkedin.yml` | Posts the next item from the queue to LinkedIn | Mon–Fri, 9 PM IST |
 
-**Activate karne ke liye kuch karna nahi hai** — jaise hi tum push karoge,
-GitHub automatically yeh dekh lega aur schedule pe chalne lagega.
+**No action required to activate these** — GitHub detects the workflow files automatically when you push.
 
-### Verify karo ki kaam kar raha hai:
+### Verify They're Running
 
-1. Repo pe jaao → **Actions** tab
-2. Tumhe teen workflows dikhenge
-3. Pehli baar manually test karne ke liye: kisi workflow pe click karo →
-   **"Run workflow"** button → "Run workflow" confirm karo
-4. 1-2 minute mein result dikhega (green ✅ ya red ❌)
+1. Go to your repository → **Actions** tab
+2. You'll see all three workflows listed
+3. To test a workflow manually before the scheduled time: click the workflow → **"Run workflow"** → **"Run workflow"** (confirm)
+4. Results appear within 1–2 minutes (green ✅ = success, red ❌ = failure)
 
-### Agar red ❌ dikhe:
+### Diagnosing a Failed Run (❌)
 
-1. Failed run pe click karo → log dekho
-2. Common issues:
-   - Secret naam galat type hua (case-sensitive hai)
-   - LinkedIn token expire ho gaya (60 din mein expire hota hai — naya lo)
-   - Gemini free tier limit hit hui (1500/day — agle din retry hoga)
+1. Click the failed run → click the failed step to expand the logs
+2. Common causes:
+
+| Symptom in logs | Cause | Fix |
+|---|---|---|
+| `LINKEDIN_ACCESS_TOKEN not set` | Secret name misspelled (case-sensitive) | Check exact spelling in Settings → Secrets |
+| `401 Unauthorized` | LinkedIn token expired | [Regenerate the token](https://developer.linkedin.com/tools/oauth) → update the Secret |
+| `429 rate limit` | Gemini free tier hit | App automatically retries with OpenRouter — usually resolves itself |
+| `No items in queue` | `weekly-batch.yml` hasn't run yet | Manually trigger `weekly-batch.yml` first, then retry `post-linkedin.yml` |
 
 ---
 
-## 🌍 Part 4 — Render.com (Web Dashboard — Required for Browser UI)
+## Part 4 — Web Dashboard on Render.com (Optional)
 
-GitHub Actions sirf **scheduled jobs** chala sakta hai — koi live website
-nahi de sakta. Dashboard (browser se input/output/queue/research) dekhne
-ke liye **Render.com pe ek live URL** chahiye. Yeh free hai.
+GitHub Actions handles all scheduled tasks — a web dashboard is only needed if you want a browser UI for manual generation, queue management, and real-time monitoring.
 
-### Setup (10 minutes):
+### Setup (~10 minutes)
 
-1. **render.com** pe free account banao (GitHub se sign in kar sakte ho)
-2. **"New +"** → **"Blueprint"**
-3. Apna GitHub repo connect karo (permission allow karo)
-4. Render automatically `render.yaml` detect karega — yeh **3 services**
-   banayega:
+1. Create a free account at [render.com](https://render.com) (sign in with GitHub)
+2. Click **"New +"** → **"Blueprint"**
+3. Connect your GitHub repository (grant Render permission to read it)
+4. Render automatically detects `render.yaml` and creates three services:
 
-   | Service | Type | Kya karta hai |
-   |---|---|---|
-   | `technova-dashboard` | Web | Browser dashboard — live URL milega |
-   | `technova-linkedin-poster` | Cron | Mon-Fri 9:30 PM IST auto-post |
-   | `technova-weekly-batch` | Cron | Sunday 8:30 PM IST content batch |
+| Service | Type | Purpose |
+|---|---|---|
+| `technova-dashboard` | Web Service | Browser dashboard — live URL |
+| `technova-linkedin-poster` | Cron Job | Mon–Fri 9:30 PM IST auto-post |
+| `technova-weekly-batch` | Cron Job | Sunday 8:30 PM IST content batch |
 
-5. Har service pe click karo → **Environment** tab → secrets daalo:
+5. For each service, go to the **Environment** tab and add your secrets:
    - `GEMINI_API_KEY`
-   - `OPENROUTER_API_KEY` (optional but recommended — fallback)
+   - `OPENROUTER_API_KEY` *(optional)*
    - `LINKEDIN_ACCESS_TOKEN`
    - `LINKEDIN_ORGANIZATION_ID`
-   - `FLASK_SECRET_KEY` — Render apne aap generate kar dega (`generateValue: true`)
-6. **"Apply"** / **"Deploy"** click karo
-7. 2-3 minute mein build complete hoga
-8. `technova-dashboard` service pe click karo → top pe **live URL** milega
-   (kuch aisa: `https://technova-dashboard.onrender.com`)
+   - `FLASK_SECRET_KEY` — Render auto-generates this (`generateValue: true` is already set in `render.yaml`)
+6. Click **"Apply"** — the build takes 2–3 minutes
+7. Click the `technova-dashboard` service → copy the **live URL** at the top (e.g. `https://technova-dashboard.onrender.com`)
 
-### ⚠️ Important — Free Web Service "Sleep" Behavior
+### Free Tier Behaviour — Cold Start
 
-Render ka **free web service** 15 minute inactivity ke baad sleep ho jaata
-hai. Jab tum dashboard open karoge, **first request 30-50 seconds** lag
-sakta hai (server wake-up time) — uske baad normal speed.
+Render's free web service **sleeps after 15 minutes of inactivity**. The first request after it sleeps takes 30–50 seconds to respond (server wake-up). Subsequent requests are fast.
 
-**Yeh scheduled posting ko AFFECT NAHI karta** — `technova-linkedin-poster`
-aur `technova-weekly-batch` **cron jobs** hain, web service se alag. Render
-unhe khud wake karke chalata hai, sahi time pe, dashboard sleep ho ya na ho.
+> ✅ **This does not affect scheduled posting.** The cron jobs (`technova-linkedin-poster`, `technova-weekly-batch`) are separate services — Render wakes them independently at their scheduled times.
 
-> 💡 **GitHub Actions vs Render Cron — dono free hain.**
-> Render web service zaroori hai (dashboard ke liye) — lekin scheduled
-> posting GitHub Actions YA Render cron, **sirf ek** rakho (dono active
-> rakhoge toh ek hi post 2 baar ho sakta hai).
+### GitHub Actions vs Render Cron — Choose One
+
+Both platforms can handle scheduled posting. Running both simultaneously will cause **duplicate posts**. Pick one:
+
+- **GitHub Actions** — simpler to manage, no extra platform
+- **Render Cron** — useful if you also want the dashboard on the same platform
 
 ---
 
-## 🧪 Part 5 — Tests Run Karna (Local + Automatic)
-
-### Local pe (apne computer pe):
+## Part 5 — Running Tests Locally
 
 ```bash
 pip install -r requirements.txt
 cp .env.example .env
-# .env mein apni keys daalo
+# Fill in your GEMINI_API_KEY at minimum
 python tests/run_tests.py
 ```
 
-Expected output: **69/69 tests passed (100%)**
+Expected result: **104/104 tests passed (100%)**
 
-### GitHub pe (automatic):
+On Windows, if you see Unicode/emoji encoding errors in the console output, run:
+```bash
+$env:PYTHONIOENCODING="utf-8"; python tests/run_tests.py
+```
 
-Har baar jab tum `git push` karoge, `run-tests.yml` workflow automatically
-chalega. Repo ke **Actions** tab mein result dikhega. Agar koi test fail
-ho, GitHub tumhe email karega.
+### Automatic Testing on GitHub
 
----
-
-## 🔄 Part 6 — Token Renewal (Har 60 Din Zaroori)
-
-LinkedIn ka access token **60 din** mein expire ho jaata hai. Jab expire
-ho jaaye:
-
-1. linkedin.com/developers/tools/oauth → naya token generate karo
-2. GitHub repo → Settings → Secrets → `LINKEDIN_ACCESS_TOKEN` → **Update**
-3. Naya value paste karo → Save
-
-> 💡 Calendar reminder set kar lo — har 55 din pe ek reminder, taaki
-> automation kabhi rukke nahi.
+Every `git push` triggers `run-tests.yml` automatically. Results appear in the **Actions** tab. GitHub sends an email if any test fails.
 
 ---
 
-## ✅ Quick Checklist — Deployment Se Pehle
+## Part 6 — LinkedIn Token Renewal (Every 60 Days)
 
-- [ ] `.env` file `.gitignore` mein hai (already configured)
-- [ ] `git log --all -- .env` kuch return nahi karta
-- [ ] GitHub repo **Private** hai
-- [ ] 4 Secrets GitHub mein add ho gaye (Gemini + OpenRouter + LinkedIn token + Org ID)
-- [ ] `run-tests.yml` workflow green ✅ dikh raha hai Actions tab mein
-- [ ] LinkedIn token expiry date kahin note kar li (60 din se)
-- [ ] Pehla manual "Run workflow" test successful raha
-- [ ] Render `technova-dashboard` service deploy ho gaya — live URL khulta hai
-- [ ] Render Environment tab mein bhi same 4 secrets daal diye
+LinkedIn access tokens expire after 60 days. When this happens, all automated posts will fail with a `401 Unauthorized` error.
+
+### How to Renew
+
+1. Go to [developer.linkedin.com/tools/oauth](https://developer.linkedin.com/tools/oauth)
+2. Select your app → select the same scopes as before → **"Request access token"**
+3. Complete the OAuth consent flow
+4. Copy the new Access Token
+5. Go to your GitHub repo → **Settings → Secrets → Actions → `LINKEDIN_ACCESS_TOKEN`** → **"Update"** → paste the new token → **"Save"**
+
+> 💡 **Set a recurring calendar reminder every 55 days** to renew the token before it expires and automation is interrupted.
 
 ---
 
-## 🆘 Troubleshooting
+## Pre-Deployment Checklist
+
+Before going live, verify each of these:
+
+- [ ] `.env` is listed in `.gitignore` *(already configured)*
+- [ ] `git log --all -- .env` returns nothing
+- [ ] GitHub repository is set to **Private**
+- [ ] All 4 secrets added to GitHub (Gemini + OpenRouter + LinkedIn token + Org ID)
+- [ ] `run-tests.yml` shows a green ✅ in the Actions tab
+- [ ] Manually triggered `weekly-batch.yml` completed successfully
+- [ ] Manually triggered `post-linkedin.yml` posted to LinkedIn
+- [ ] LinkedIn token expiry date noted (60 days from generation)
+- [ ] Render `technova-dashboard` deployed and the live URL loads *(if using dashboard)*
+- [ ] Render Environment tab secrets added *(if using Render)*
+
+---
+
+## Troubleshooting Quick Reference
 
 | Problem | Solution |
 |---|---|
-| "Secret not found" error | Secret naam exact match check karo (case-sensitive) |
-| LinkedIn post fail ho raha | Token expired — naya generate karo |
-| Gemini "429 rate limit" | App automatically Gemini Pro ya OpenRouter try karega — wait karo |
-| Workflow nahi chal raha automatically | Repo **Settings → Actions → General** mein "Allow all actions" enabled hai check karo |
-| Queue khali hai, kuch post nahi hua | `weekly-batch.yml` pehle chalna chahiye Sunday ko — manually "Run workflow" try karo |
-| Dashboard 30-50 sec lag raha pehli baar | Normal — free tier sleep se wake ho raha hai. Doosri request fast hogi. |
-| Dashboard "Application Error" dikhe | Render → Logs tab dekho — usually missing secret ya build fail |
+| "Secret not found" in logs | Check secret name spelling — names are **case-sensitive** |
+| LinkedIn `401 Unauthorized` | Token expired — [regenerate it](https://developer.linkedin.com/tools/oauth) |
+| LinkedIn `403 Permission denied` | Missing OAuth scope — ensure `w_member_social` and `r_liteprofile` are enabled on your LinkedIn App |
+| LinkedIn `No posting target` | Set `LINKEDIN_ORGANIZATION_ID` **or** `LINKEDIN_PERSON_URN` in Secrets |
+| Gemini `429 rate limit` | App retries with OpenRouter automatically — wait and it will resolve |
+| Workflow not triggering on schedule | Repo Settings → Actions → General → verify "Allow all actions and reusable workflows" is enabled |
+| Queue empty, nothing posted | Trigger `weekly-batch.yml` first to populate the queue |
+| Dashboard slow on first load | Expected — free tier cold start takes 30–50 seconds. Subsequent requests are fast. |
+| Dashboard "Application Error" | Check Render → Logs tab — usually a missing environment variable or build failure |
 
 ---
 
-## 📊 Cost Summary
+## Diagnostic Commands
 
-| Service | Free Tier Limit | Tumhara Usage |
+Run these locally to verify your setup before deploying:
+
+```bash
+# Check all environment variables
+python -c "from utils import validate_config; import json; print(json.dumps(validate_config(), indent=2))"
+
+# LinkedIn full diagnostic
+python -c "from linkedin_poster import diagnose_linkedin; diagnose_linkedin()"
+
+# Test AI connection (requires GEMINI_API_KEY)
+python -c "from ai_client import which_model_answered; print(which_model_answered('Say OK'))"
+
+# Run only deployment-related tests
+python tests/run_tests.py --suite deploy
+```
+
+---
+
+## Cost Summary
+
+| Service | Free Tier Limit | This App's Usage |
 |---|---|---|
-| Gemini 2.5 API | Daily free quota | ~30-40 requests/week — well within limit |
-| OpenRouter (fallback) | Rate-limited but free | Only used if Gemini fails |
-| GitHub Actions | 2000 min/month | ~15 min/week — well within limit |
-| GitHub (private repo) | Unlimited free | ✅ |
-| Render Web Service | Free tier (sleeps when idle) | ✅ Dashboard |
-| Render Cron Jobs | Free tier available | ✅ Scheduled posting
+| Gemini 2.5 API | ~1,500 requests/day | ~40 requests/week ✅ |
+| OpenRouter (fallback) | Rate-limited free models | Used only if Gemini fails ✅ |
+| GitHub Actions | 2,000 min/month | ~15 min/week ✅ |
+| GitHub Private Repo | Unlimited | ✅ |
+| Render Web Service | Free (sleeps when idle) | Dashboard only ✅ |
+| Render Cron Jobs | Free tier | Scheduled posting ✅ |
 
-**Total monthly cost: ₹0**
+**Monthly cost: ₹0**
 
 ---
 

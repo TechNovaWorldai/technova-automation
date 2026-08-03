@@ -1,5 +1,5 @@
 """
-TechNova World — LinkedIn Poster v3.0
+TechNova World — LinkedIn Poster v3.1
 
 Handles all LinkedIn publishing for TechNova World.
 
@@ -8,6 +8,20 @@ Posting strategy:
   2. If the company post returns a 403 (Community Management API approval pending),
      automatically fall back to the personal profile (w_member_social scope).
   3. Person URN is fetched automatically from the token if not set explicitly.
+
+Required OAuth scopes (LinkedIn Developer App):
+  - w_member_social   — post on behalf of the member (personal)
+  - r_liteprofile     — read profile to auto-fetch Person URN
+  - r_emailaddress    — (optional but often bundled)
+  - rw_organization_social — post to company page (requires LinkedIn approval)
+
+Common failure causes:
+  • Token expired (LinkedIn tokens expire every 60 days)
+  • Missing LINKEDIN_ORGANIZATION_ID *and* LINKEDIN_PERSON_URN in Secrets
+  • Wrong OAuth scopes selected when generating the token
+  • Company page posting requires Community Management API approval from LinkedIn
+
+Run diagnose_linkedin() for a full self-test report.
 """
 
 import requests
@@ -28,6 +42,10 @@ def _headers() -> dict:
 
 def _fetch_person_urn() -> Optional[str]:
     """Derive the LinkedIn Person URN from the current access token."""
+    if not cfg.LINKEDIN_ACCESS_TOKEN:
+        logger.error("❌ Cannot fetch Person URN: LINKEDIN_ACCESS_TOKEN is not set.")
+        return None
+
     for url, field in [
         ("https://api.linkedin.com/v2/userinfo", "sub"),
         ("https://api.linkedin.com/v2/me",       "id"),
@@ -37,9 +55,21 @@ def _fetch_person_urn() -> Optional[str]:
             if r.status_code == 200:
                 val = r.json().get(field)
                 if val:
-                    return val if val.startswith("urn:li:person:") else f"urn:li:person:{val}"
-        except Exception:
+                    urn = val if val.startswith("urn:li:person:") else f"urn:li:person:{val}"
+                    logger.debug(f"Person URN resolved from {url}: {urn}")
+                    return urn
+            elif r.status_code == 403:
+                logger.debug(f"_fetch_person_urn: 403 on {url} (scope limitation) — trying next endpoint")
+            elif r.status_code == 401:
+                logger.error("❌ _fetch_person_urn: 401 Unauthorized — token may be expired.")
+                return None
+        except Exception as exc:
+            logger.debug(f"_fetch_person_urn: exception on {url}: {exc}")
             continue
+    logger.warning(
+        "⚠️  Could not auto-fetch Person URN (both profile endpoints returned 403/error). "
+        "Set LINKEDIN_PERSON_URN manually in your .env / GitHub Secrets."
+    )
     return None
 
 
@@ -50,7 +80,12 @@ def check_linkedin_connection() -> bool:
     limitation rather than an expired token — posting may still succeed.
     """
     if not cfg.LINKEDIN_ACCESS_TOKEN:
-        logger.error("❌ LINKEDIN_ACCESS_TOKEN missing")
+        logger.error(
+            "❌ LINKEDIN_ACCESS_TOKEN is not set.\n"
+            "   → Local: add it to your .env file\n"
+            "   → GitHub Actions: add it as a repository Secret\n"
+            "   → Render: add it in the Environment Variables panel"
+        )
         return False
 
     for url, field in [
@@ -61,22 +96,35 @@ def check_linkedin_connection() -> bool:
             r = requests.get(url, headers=_headers(), timeout=cfg.API_TIMEOUT)
             if r.status_code == 200:
                 name = r.json().get(field) or r.json().get("name") or "User"
-                logger.info(f"✅ LinkedIn token valid! ({name})")
+                logger.info(f"✅ LinkedIn token is valid. Authenticated as: {name}")
                 return True
             elif r.status_code == 401:
-                logger.error("❌ Token expired — naya token lo: developer.linkedin.com/tools/oauth")
+                logger.error(
+                    "❌ LinkedIn token has expired (HTTP 401).\n"
+                    "   → Go to: https://developer.linkedin.com/tools/oauth\n"
+                    "   → Generate a new Access Token\n"
+                    "   → Update LINKEDIN_ACCESS_TOKEN in GitHub Secrets / .env"
+                )
                 return False
             elif r.status_code == 403:
-                continue  # scope issue, try next endpoint
+                continue  # Scope limitation on this endpoint — try next one
         except Exception:
             continue
 
-    # All profile endpoints returned 403 — token likely valid for posting
+    # All profile endpoints returned 403 — token is likely valid for posting
     if cfg.LINKEDIN_ORGANIZATION_ID or cfg.LINKEDIN_PERSON_URN:
-        logger.warning("⚠️  Profile check returned 403 (scope issue) — proceeding with posting anyway")
+        logger.warning(
+            "⚠️  Profile endpoints returned 403 (likely a scope limitation).\n"
+            "   Your token may still be valid for posting — proceeding.\n"
+            "   If posts also fail, regenerate the token with r_liteprofile scope."
+        )
         return True
 
-    logger.error("❌ Cannot verify token — check LINKEDIN_ACCESS_TOKEN")
+    logger.error(
+        "❌ Cannot verify LinkedIn token — all profile endpoints returned 403.\n"
+        "   → Ensure your LinkedIn App has the r_liteprofile scope enabled.\n"
+        "   → Or set LINKEDIN_PERSON_URN manually to bypass profile lookup."
+    )
     return False
 
 
@@ -184,17 +232,84 @@ def _do_post(text: str, image_path: str, author_urn: str, label: str) -> Result:
             logger.info(f"✅ Posted to {label}! ID: {post_id}")
             return Result.success({"post_id": post_id, "timestamp": datetime.now().isoformat()})
         elif r.status_code == 401:
-            return Result.fail("401 Token expired — naya token lo")
+            return Result.fail(
+                "401 Unauthorized: LinkedIn token has expired.\n"
+                "Fix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\n"
+                "then update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file."
+            )
         elif r.status_code == 403:
-            return Result.fail(f"403 Permission denied for {label}")
+            return Result.fail(
+                f"403 Permission denied for {label}.\n"
+                "Likely cause: your OAuth token lacks the required scope (w_member_social for\n"
+                "personal posts, rw_organization_social for company page posts).\n"
+                "Fix: regenerate the token with the correct scopes enabled."
+            )
         elif r.status_code == 422:
-            return Result.fail(f"422 Validation: {r.json().get('message', 'unknown')}")
+            msg = r.json().get('message', r.text[:200])
+            return Result.fail(f"422 Validation error: {msg}")
         else:
             return Result.fail(f"HTTP {r.status_code}: {r.text[:200]}")
 
     except requests.exceptions.Timeout:
-        return Result.fail("Timeout — LinkedIn slow hai")
+        return Result.fail(
+            f"Request timed out after {cfg.API_TIMEOUT}s posting to {label}. "
+            "LinkedIn may be slow — the job will retry automatically."
+        )
     except requests.exceptions.ConnectionError:
-        return Result.fail("Network error")
-    except Exception as e:
-        return Result.fail(f"Error: {e}")
+        return Result.fail("Network error: could not reach api.linkedin.com. Check your internet connection.")
+    except Exception as exc:
+        return Result.fail(f"Unexpected error posting to {label}: {exc}")
+
+
+def diagnose_linkedin() -> None:
+    """
+    Print a full LinkedIn configuration diagnostic report.
+
+    Run this locally to troubleshoot posting failures before deploying:
+        python -c "from linkedin_poster import diagnose_linkedin; diagnose_linkedin()"
+    """
+    print("\n" + "=" * 60)
+    print("  🔍  TechNova World — LinkedIn Diagnostics")
+    print("=" * 60)
+
+    token = cfg.LINKEDIN_ACCESS_TOKEN
+    org   = cfg.LINKEDIN_ORGANIZATION_ID
+    urn   = cfg.LINKEDIN_PERSON_URN
+
+    print(f"\n  LINKEDIN_ACCESS_TOKEN      : {'\u2705 Set (' + token[:8] + '...)' if token else '\u274c NOT SET'}")
+    print(f"  LINKEDIN_ORGANIZATION_ID   : {'\u2705 ' + org if org else '\u26a0\ufe0f  Not set (personal-only mode)'}")
+    print(f"  LINKEDIN_PERSON_URN        : {'\u2705 ' + urn if urn else '\u26a0\ufe0f  Not set (will auto-fetch)'}")
+    print(f"  LINKEDIN_FALLBACK_TO_PERSONAL: {'\u2705 Enabled' if cfg.LINKEDIN_FALLBACK_TO_PERSONAL else '\u274c Disabled'}")
+
+    if not token:
+        print("\n  \u274c FATAL: No access token. Cannot proceed.")
+        print("  → Get one at: https://developer.linkedin.com/tools/oauth")
+        print("=" * 60 + "\n")
+        return
+
+    print("\n  Testing connection ...")
+    ok = check_linkedin_connection()
+    print(f"  Connection check : {'\u2705 PASS' if ok else '\u274c FAIL'}")
+
+    if not urn:
+        print("  Auto-fetching Person URN ...")
+        fetched = _fetch_person_urn()
+        print(f"  Person URN       : {'\u2705 ' + fetched if fetched else '\u274c Could not fetch (see warnings above)'}")
+    else:
+        fetched = urn
+
+    if org:
+        print(f"\n  Posting target   : Company page (urn:li:organization:{org})")
+    elif fetched:
+        print(f"\n  Posting target   : Personal profile ({fetched})")
+    else:
+        print("\n  \u274c No posting target available. Set LINKEDIN_ORGANIZATION_ID or LINKEDIN_PERSON_URN.")
+
+    print("\n  Required OAuth Scopes:")
+    print("    r_liteprofile      — read profile (URN auto-fetch)")
+    print("    w_member_social    — post as member (personal)")
+    print("    rw_organization_social — post as company (needs LinkedIn approval)")
+    print("\n  If you see 403 errors, regenerate your token at:")
+    print("    https://developer.linkedin.com/tools/oauth")
+    print("  and ensure ALL three scopes above are checked.")
+    print("=" * 60 + "\n")
