@@ -46,6 +46,8 @@ def main():
     item    = pending[0]
     content = item["content"]
     logger.info(f"📋 Post: {item.get('topic', 'untitled')[:60]}")
+    if item.get("image_prompt"):
+        logger.info(f"🎨 Image prompt: {item['image_prompt'][:80]}")
 
     # Safety checks
     spam = check_spam(content)

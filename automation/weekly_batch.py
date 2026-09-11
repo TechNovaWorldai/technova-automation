@@ -22,7 +22,8 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from utils         import logger, queue_mgr, save_text
-from ai_generator   import generate_linkedin_post, generate_twitter_posts, generate_medium_article
+from ai_generator   import (generate_linkedin_post, generate_twitter_posts,
+                             generate_medium_article, generate_image_prompt)
 from algo_engine    import score_linkedin_post
 import config as cfg
 
@@ -86,8 +87,11 @@ def main():
         li_content = generate_linkedin_post(topic, auto_improve=True, show_score=False)
         if li_content:
             score = score_linkedin_post(li_content)
-            queue_mgr.add("linkedin", li_content, topic)
+            img_prompt = generate_image_prompt(topic, li_content) or ""
+            queue_mgr.add("linkedin", li_content, topic, image_prompt=img_prompt)
             save_text(f"generated/linkedin_{day.lower()}.txt", li_content)
+            if img_prompt:
+                save_text(f"generated/image_prompt_{day.lower()}.txt", img_prompt)
             logger.info(f"  ✅ LinkedIn queued — score {score.total}/100")
             success_count += 1
         else:

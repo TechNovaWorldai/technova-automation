@@ -60,7 +60,7 @@ WATERMARK_TEXT     = _env("WATERMARK_TEXT", "TechNova World")
 WATERMARK_POSITION = _env("WATERMARK_POSITION", "bottom_right")
 
 # ── SCHEDULE (IST 24h format) ─────────────────────────────────
-LINKEDIN_POST_TIME = _env("LINKEDIN_POST_TIME", "21:00")
+LINKEDIN_POST_TIME = _env("LINKEDIN_POST_TIME", "09:00")
 MEDIUM_POST_DAYS   = ["Tuesday", "Thursday"]
 MEDIUM_POST_TIME   = _env("MEDIUM_POST_TIME", "18:00")
 TWITTER_POST_TIMES = ["09:00", "12:00", "15:00", "18:00", "23:00"]

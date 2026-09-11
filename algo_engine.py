@@ -291,18 +291,18 @@ def score_linkedin_post(text: str) -> QualityScore:
         hook_score += 5
     breakdown["Hook Quality"] = hook_score
 
-    # 2. LENGTH (20 pts)
+    # 2. LENGTH (15 pts)
     length_score = 0
     r = LINKEDIN_ALGO["content_rules"]["optimal_length"]
     if r["min"] <= char_count <= r["max"]:
-        length_score = 20
+        length_score = 15
         passed.append(f"✅ Length optimal ({char_count} chars — sweet spot {r['min']}-{r['max']})")
     elif char_count < r["min"]:
-        length_score = max(0, int(20 * char_count / r["min"]))
+        length_score = max(0, int(15 * char_count / r["min"]))
         warnings.append(f"⚠️  Too short ({char_count} chars) — more dwell time needed")
         sugg.append("💡 Add more value: a story, example, or 2 more bullet points")
     else:
-        length_score = 12
+        length_score = 9
         warnings.append(f"⚠️  Too long ({char_count} chars) — consider splitting")
     breakdown["Length"] = length_score
 
@@ -334,17 +334,17 @@ def score_linkedin_post(text: str) -> QualityScore:
         passed.append("✅ Multiple paragraphs = good structure")
     breakdown["Engagement Triggers"] = eng_score
 
-    # 5. HASHTAGS (10 pts)
+    # 5. HASHTAGS (5 pts)
     hash_score = 0
     h = LINKEDIN_ALGO["content_rules"]["hashtags"]
     if h["min"] <= hashtag_count <= h["max"]:
-        hash_score = 10
+        hash_score = 5
         passed.append(f"✅ Hashtag count good ({hashtag_count})")
     elif hashtag_count > h["max"]:
         failed.append(f"❌ Too many hashtags ({hashtag_count}) — spam signal!")
         sugg.append(f"💡 Use max {h['max']} hashtags")
     else:
-        hash_score = 5
+        hash_score = 2
         warnings.append(f"⚠️  Only {hashtag_count} hashtag(s) — add more for discoverability")
     breakdown["Hashtags"] = hash_score
 
@@ -357,6 +357,30 @@ def score_linkedin_post(text: str) -> QualityScore:
         failed.append("❌ External link in post body cuts reach by 60%+!")
         sugg.append("💡 Move link to first comment — post it there after publishing")
     breakdown["No External Links"] = link_score
+
+    # 7. STRUCTURE COMPLIANCE — topic tag + caution line (10 pts)
+    struct_score = 0
+    top_lines = [l.strip() for l in lines[:6] if l.strip()]
+    has_topic_tag = any(
+        l.startswith('#') and l.count('#') == 1 and len(l.split()) == 1
+        for l in top_lines
+    )
+    has_caution = any(l.startswith('⚠️') for l in top_lines)
+
+    if has_topic_tag:
+        struct_score += 5
+        passed.append("✅ Topic tag present right after the hook")
+    else:
+        failed.append("❌ Missing topic tag line after the hook")
+        sugg.append("💡 Add one specific hashtag as a standalone line right after the hook")
+
+    if has_caution:
+        struct_score += 5
+        passed.append("✅ Caution/context line present")
+    else:
+        failed.append("❌ Missing ⚠️ caution/context line before the body")
+        sugg.append("💡 Add a short ⚠️ caveat line specific to this topic before the body")
+    breakdown["Structure Compliance"] = struct_score
 
     # Total
     total = sum(breakdown.values())
@@ -737,7 +761,8 @@ def build_linkedin_prompt(topic: str, brand: str, audience: str) -> str:
     return f"""Write a LinkedIn post for {brand} about: "{topic}"
 Audience: {audience}
 
-ALGORITHM RULES (follow strictly for maximum reach):
+Follow this EXACT 6-part structure, in this order, with a blank line between
+each part. Label nothing in the output — just write the parts back to back.
 
 1. HOOK (first 2 lines — shown before 'see more'):
    - MAX 140 chars combined
@@ -745,22 +770,32 @@ ALGORITHM RULES (follow strictly for maximum reach):
    - Use one of these proven patterns:
 {hooks}
 
-2. BODY (dwell time = #1 signal):
+2. TOPIC TAG (one line, right after the hook):
+   - Exactly ONE hashtag that names the specific topic/category, e.g. "#AICareers"
+   - This is a category label, not part of the closing hashtag block
+   - Format: just the single hashtag on its own line
+
+3. CAUTION LINE (one short line, right after the topic tag):
+   - Start with ⚠️ followed by a brief, honest caveat or context-setter relevant
+     to THIS topic (e.g. "⚠️ This worked for me — your mileage may vary" or
+     "⚠️ Not investment/career advice, just field observations")
+   - Must be specific to the topic, not generic filler
+
+4. BODY (dwell time = #1 signal):
    - Total 900-1300 characters
    - Line break every 2-3 lines (mobile readability)
    - One clear insight or story
-   - NO external links (kills reach by 60%+)
+   - NO hashtags and NO external links anywhere in the body (kills reach by 60%+)
 
-3. ENGAGEMENT TRIGGER:
-   - End with ONE specific question:
+5. ENGAGEMENT QUESTION (one line):
+   - ONE specific question to drive comments:
 {questions}
 
-4. HASHTAGS (last line only):
-   - Exactly 4-5 hashtags
+6. CLOSING HASHTAGS (last line only):
+   - Exactly 4-5 hashtags (different from the topic tag in part 2)
    - Must include: #AI #ArtificialIntelligence
-   - No hashtags in body text
 
-Return ONLY the post. No explanations."""
+Return ONLY the post in that order. No explanations, no part labels."""
 
 
 def build_twitter_prompt(topic: str, brand: str, audience: str,

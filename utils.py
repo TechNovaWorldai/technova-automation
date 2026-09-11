@@ -258,7 +258,8 @@ class QueueManager:
         return save_json(self.path, data)
 
     def add(self, platform: str, content: str, topic: str = "",
-            image_path: str = "", schedule_time: str = "") -> bool:
+            image_path: str = "", schedule_time: str = "",
+            image_prompt: str = "") -> bool:
         q = self.load()
         q.append({
             "id":            len(q) + 1,
@@ -266,6 +267,7 @@ class QueueManager:
             "content":       content,
             "topic":         topic,
             "image_path":    image_path,
+            "image_prompt":  image_prompt,
             "schedule_time": schedule_time,
             "added_at":      datetime.now().isoformat(),
             "status":        "pending",

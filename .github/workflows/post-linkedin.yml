@@ -3,13 +3,13 @@ name: TechNova World — Scheduled LinkedIn Posting
 # ============================================================
 # Yeh workflow GitHub Actions ke "free 2000 min/month" quota
 # use karta hai. Cron schedule UTC mein hota hai — IST = UTC+5:30
-# isliye humne IST 9:00 PM ke liye UTC 15:30 use kiya hai.
+# isliye humne IST 9:00 AM ke liye UTC 03:30 use kiya hai.
 # ============================================================
 
 on:
   schedule:
-    # LinkedIn post — Mon-Fri 9:00 PM IST = 15:30 UTC
-    - cron: '30 15 * * 1-5'
+    # LinkedIn post — Mon-Fri 9:00 AM IST = 03:30 UTC
+    - cron: '30 3 * * 1-5'
   workflow_dispatch:        # Manual "Run workflow" button bhi milega
 
 permissions:

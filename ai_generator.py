@@ -25,8 +25,8 @@ from algo_engine import (
 )
 import config as cfg
 
-MIN_QUALITY_SCORE = 65          # Posts below this get auto-improved
-MAX_IMPROVE_TRIES = 2           # Max re-generation attempts
+MIN_QUALITY_SCORE = 80          # Posts below this get auto-improved
+MAX_IMPROVE_TRIES = 3           # Max re-generation attempts
 
 
 # ── AI CALL (now routed through ai_client's fallback chain) ──
@@ -134,6 +134,38 @@ def generate_linkedin_post(topic: str,
         print_score_report(final_score)
 
     return content
+
+
+def generate_image_prompt(topic: str, content: str) -> Optional[str]:
+    """
+    Generate a detailed image-generation prompt tailored to a specific post's
+    actual body content (not just the topic), for use with an image-gen tool.
+
+    Returns a single descriptive prompt string, or None if generation fails.
+    """
+    logger.info(f"🎨 Image prompt: {topic[:50]}")
+    prompt = f"""Read this LinkedIn post and write ONE detailed image-generation
+prompt for an accompanying visual.
+
+POST TOPIC: {topic}
+POST CONTENT:
+{content}
+
+Rules for the image prompt:
+- Reflect the SPECIFIC idea/insight in the post body above — not just the
+  generic topic. Someone reading only the image prompt should be able to
+  guess what the post is about.
+- Describe: subject, composition, color palette, mood/style (clean, modern,
+  tech-editorial — NOT clipart or generic stock-photo look).
+- NO embedded text, words, or letters in the image (text renders badly in
+  AI image generation) — describe purely visual elements.
+- Keep it to 2-4 sentences, specific and concrete, not vague ("an AI image").
+- Brand tone: {cfg.BRAND_NAME} — modern, credible, builder-focused, not hypey.
+
+Return ONLY the image prompt text. No explanations, no quotes around it."""
+
+    result = _gemini(prompt, max_tokens=300)
+    return result.strip() if result else None
 
 
 def generate_twitter_posts(topic: str, count: int = 5,
