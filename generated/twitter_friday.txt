@@ -1,0 +1,17 @@
+We need to produce 5 standalone Twitter/X posts, each max 270 characters, max 2 hashtags each. Number them 1. 2. 3. 4. 5. Each post must follow specific types:
+
+---
+
+- Post 1: Breaking news / hook angle (so maybe "Breaking: ..." with confident opinion? Actually hot_takes is a type, but we need to assign per post: 1 breaking news/hook angle.
+
+---
+
+- Post 2: Surprising insight ("Most people don't know...") (list_tweets? Actually surprising insight could be list or just statement. Must be within rules: We can use list_tweets for any post, but we need to ensure each post matches the requested type.
+
+---
+
+- Post 3: Question (drives replies). So a question tweet.
+
+---
+
+- Post 4: Practical tip (drives bookmarks). So a tip.
