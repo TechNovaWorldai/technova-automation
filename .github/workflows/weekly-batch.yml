@@ -48,6 +48,7 @@ jobs:
           python automation/weekly_batch.py
 
       - name: Commit generated content + queue
+        if: always()
         run: |
           git config --global user.name "TechNova Automation Bot"
           git config --global user.email "automation@technova.world"
