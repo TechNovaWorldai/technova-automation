@@ -1,0 +1,17 @@
+We need to produce 5 standalone Twitter/X posts for TechNova World about "Here are 8 trending AI topics for TechNova World, tailored for your audience". Audience: people learning AI, transitioning to IT/AI careers, AI enthusiasts.
+
+---
+
+We must obey algorithm rules: each post max 270 characters, max 2 hashtags per post. Each post must be one of the types: hot_takes, list_tweets, question_tweets, story_tweets, news_commentary.
+
+---
+
+- Post 1: Breaking news / hook angle (so news_commentary)
+
+---
+
+- Post 2: Surprising insight ("Most people don't know...") (that could be hot_takes or list_tweets? Surprising insight maybe hot_takes? But we need to follow algorithm: hot_takes: confident opinion on trending topic. That fits surprising insight. So Post 2: hot_takes.
+
+---
+
+- Post 3: Question (drives replies) => question_tweets.

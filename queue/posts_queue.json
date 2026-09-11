@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": 1,
+    "platform": "linkedin",
+    "content": "Struggling to navigate the AI landscape?\nHere are 8 trending AI topics to focus on for career growth:\n\n#AITrends\n\n⚠️ The AI field moves fast – these are current hot spots, not guarantees for eternity.\n\nThe world of AI is evolving at an incredible pace, and for those looking to learn, transition, or simply stay current, knowing where to focus your energy is key. We've distilled the noise into 8 high-impact areas that are currently driving innovation and creating significant career opportunities.\n\nFirst up, **Generative AI** beyond large language models (LLMs) is exploding. Think text-to-video, 3D model generation, and synthetic data creation. Mastering these tools and understanding their underlying architectures positions you at the forefront of content creation and digital transformation.\n\nNext, **AI Ethics and Governance** is no longer a niche – it's foundational. As AI integrates deeper into society, skills in responsible AI development, bias detection, and regulatory compliance are becoming indispensable across all industries. This is about building trust and ensuring fair outcomes.\n\n**Edge AI** is also booming. With the demand for real-time processing and privacy, deploying AI directly on devices (think smart cameras, IoT sensors) is critical. Understanding optimization for constrained environments and low-latency inference is a highly sought-after skill.\n\nDon't overlook **AI for Cybersecurity**. As cyber threats become more sophisticated, AI-powered detection, prevention, and response systems are vital. This intersection offers fascinating challenges and significant impact.\n\nThen there's **Explainable AI (XAI)**. Moving beyond black-box models, the ability to interpret and explain AI decisions is crucial for adoption, debugging, and regulatory compliance, especially in sensitive domains like healthcare and finance.\n\n**Reinforcement Learning (RL)**, while complex, is seeing renewed interest beyond gaming, particularly in areas like robotics, supply chain optimization, and autonomous systems. It's a challenging but highly rewarding field.\n\n**Vector Databases and Retrieval-Augmented Generation (RAG)** are becoming essential for building robust and context-aware LLM applications. This is about making AI smarter by giving it access to up-to-date, relevant information.\n\nFinally, **MLOps (Machine Learning Operations)** continues to be a cornerstone. The ability to deploy, monitor, and maintain AI models at scale is critical for any organization serious about AI. It’s the bridge between data science and production.\n\nWhich of these trending AI topics are you most excited to explore further?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers #MachineLearning",
+    "topic": "Here are 8 trending AI topics for TechNova World, tailored for your audience:",
+    "image_path": "",
+    "image_prompt": "Show a sleek, minimalist workspace where a focused professional in business attire stands before a floating transparent holographic panel array; each panel displays a distinct visual symbol — a video‑camera‑like waveform for generative AI, a shield with circuit patterns for AI ethics, a compact device with latency lines for edge AI, a stylized lock with neural nodes for AI cybersecurity, a transparent brain diagram for explainable AI, a robotic arm with reward curves for reinforcement learning, a database cylinder with data streams for vector databases/RAG, and a pipeline of connected nodes for MLOps — set against a cool‑blue tech background with subtle teal accents, conveying a modern, credible, builder‑focused atmosphere.",
+    "schedule_time": "",
+    "added_at": "2026-09-11T20:33:26.538336",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 2,
+    "platform": "linkedin",
+    "content": "5 AI tools that got me my tech job faster than coding bootcamps\n\n#AICareers\n\n⚠️ This worked for me during my transition — your path may differ\n\nAfter 6 months of learning AI concepts, I thought I needed to master every framework. Big mistake. Instead, I focused on 5 practical tools that actually impressed hiring managers: Hugging Face for quick model demos, LangChain for building chatbots, Streamlit for creating portfolio projects, GitHub Copilot for efficient coding, and Notion AI for documentation. These weren't fancy research papers—they were the difference between getting ghosted and landing interviews. My portfolio went from \"nice theory\" to \"show me your code\" in weeks.\n\nWhich tool are you trying first?\n\n#AI #ArtificialIntelligence #TechNova #CareerTransition #LearnAI",
+    "topic": "🔥 Heat level: 🔥🔥🔥",
+    "image_path": "",
+    "image_prompt": "A modern workspace at dusk with a developer's laptop displaying a polished AI portfolio project built using Streamlit, a tablet showing Notion AI-generated documentation, a code editor with GitHub Copilot suggestions, a browser window with Hugging Face model demos, and a chatbot interface powered by LangChain on a secondary monitor. The scene is illuminated by cool blue and neon green ambient lighting from screens, with clean desk clutter and subtle circuit-board patterns in the background. Mood is focused and accomplished, reflecting proven tools transforming theory into tangible career success.",
+    "schedule_time": "",
+    "added_at": "2026-09-11T20:33:57.365907",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  }
+]
