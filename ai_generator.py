@@ -31,7 +31,7 @@ MAX_IMPROVE_TRIES = 3           # Max re-generation attempts
 
 # ── AI CALL (now routed through ai_client's fallback chain) ──
 
-def _gemini(prompt: str, max_tokens: int = 1300) -> Optional[str]:
+def _gemini(prompt: str, max_tokens: int = 1600) -> Optional[str]:
     """
     Thin wrapper that delegates to ``ai_client.generate_text()``.
 
@@ -164,7 +164,7 @@ Rules for the image prompt:
 
 Return ONLY the image prompt text. No explanations, no quotes around it."""
 
-    result = _gemini(prompt, max_tokens=300)
+    result = _gemini(prompt, max_tokens=400)
     return result.strip() if result else None
 
 
@@ -178,7 +178,7 @@ def generate_twitter_posts(topic: str, count: int = 5,
     logger.info(f"🐦 Twitter {count} posts: {topic[:50]}")
     prompt = build_twitter_prompt(topic, cfg.BRAND_NAME, cfg.AUDIENCE, "single")
 
-    raw = _gemini(prompt, max_tokens=900)
+    raw = _gemini(prompt, max_tokens=1100)
     if not raw:
         return []
 
@@ -212,7 +212,7 @@ def generate_twitter_thread(topic: str, tweet_count: int = 8) -> List[str]:
     logger.info(f"🧵 Thread ({tweet_count} tweets): {topic[:50]}")
     prompt = build_twitter_prompt(topic, cfg.BRAND_NAME, cfg.AUDIENCE, "thread")
 
-    raw = _gemini(prompt, max_tokens=1200)
+    raw = _gemini(prompt, max_tokens=1500)
     if not raw:
         return []
 

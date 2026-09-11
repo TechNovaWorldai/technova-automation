@@ -62,15 +62,25 @@ def _call_gemini_model(model: str, prompt: str, max_tokens: int) -> str:
         raise ValueError("GEMINI_API_KEY not set")
 
     url = f"{GEMINI_BASE}/{model}:generateContent?key={cfg.GEMINI_API_KEY}"
+
+    generation_config = {
+        "maxOutputTokens": max_tokens,
+        "temperature": 0.8,
+        "topP": 0.94,
+    }
+    # Gemini 2.5 models spend part of maxOutputTokens on internal "thinking"
+    # before the visible answer, which was silently truncating our posts
+    # (finishReason=MAX_TOKENS was never checked, so a cut-off post looked
+    # like a success). Flash supports disabling thinking entirely; Pro
+    # requires a small minimum budget, so we just give it a token cushion.
+    if "flash" in model:
+        generation_config["thinkingConfig"] = {"thinkingBudget": 0}
+
     r = requests.post(
         url,
         json={
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "maxOutputTokens": max_tokens,
-                "temperature": 0.8,
-                "topP": 0.94,
-            },
+            "generationConfig": generation_config,
         },
         timeout=cfg.API_TIMEOUT,
     )
@@ -94,8 +104,18 @@ def _call_gemini_model(model: str, prompt: str, max_tokens: int) -> str:
     finish = cands[0].get("finishReason", "STOP")
     if finish == "SAFETY":
         raise ValueError(f"{model} safety filter triggered")
+    if finish == "MAX_TOKENS":
+        raise IOError(
+            f"{model} hit MAX_TOKENS — response was truncated "
+            f"(thinking tokens likely ate the budget)"
+        )
 
-    return cands[0]["content"]["parts"][0]["text"]
+    parts = cands[0].get("content", {}).get("parts", [])
+    text_parts = [p["text"] for p in parts if "text" in p and not p.get("thought")]
+    if not text_parts:
+        raise ValueError(f"{model} returned no usable text parts")
+
+    return "".join(text_parts)
 
 
 # ════════════════════════════════════════════════════════════
