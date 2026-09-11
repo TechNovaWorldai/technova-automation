@@ -87,6 +87,24 @@ def main():
     logger.info(f"🤖 Weekly batch generation started: {datetime.now().isoformat()}")
     logger.info("=" * 50)
 
+    # TEMP DIAGNOSTIC — checks which AI providers actually respond right now
+    # and writes the result to logs/ so it survives the ephemeral runner.
+    try:
+        from ai_client import check_all_providers, generate
+        Path("logs").mkdir(exist_ok=True)
+        status = check_all_providers()
+        test = generate("Write one sentence about AI.", max_tokens=200)
+        with open("logs/debug_providers.txt", "w") as f:
+            f.write(f"Provider status: {status}\n\n")
+            f.write("Test generate(): " + (
+                f"OK via {test.data['model_used']}: {test.data['text'][:150]}"
+                if test else f"FAILED: {test.error}"
+            ))
+        logger.info(f"🔍 Provider status: {status}")
+    except Exception as e:
+        logger.warning(f"Diagnostic check itself failed: {e}")
+    # END TEMP DIAGNOSTIC
+
     if not cfg.GEMINI_API_KEY:
         logger.error("❌ GEMINI_API_KEY missing — check GitHub Secrets")
         sys.exit(1)
