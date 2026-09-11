@@ -22,14 +22,17 @@ venv/
 env/
 .venv/
 
-# Generated content (yeh apne paas rakho, GitHub pe nahi)
-generated/*.txt
+# Generated content + queue MUST be committed — GitHub Actions runners are
+# ephemeral (fresh checkout every run), so this is the ONLY way state
+# (pending posts, generated drafts) survives between the Sunday batch job
+# and the Mon-Fri posting job. Do NOT re-ignore these.
+# generated/*.txt   -- (intentionally NOT ignored, see note above)
+# queue/*.json      -- (intentionally NOT ignored, see note above)
 generated/deep_research/*.txt
 generated/*.pdf
 !generated/.gitkeep
 
 # Runtime data
-queue/*.json
 logs/*.log
 logs/*.json
 !queue/.gitkeep
