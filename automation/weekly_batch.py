@@ -57,10 +57,27 @@ def get_topics() -> list:
             "What AI skills are companies hiring for now",
         ]
 
-    # Extract topic-like lines (very simple heuristic — good enough as fallback)
-    lines = [l.strip("-•* ").strip() for l in trending_text.split("\n")
-              if l.strip() and len(l.strip()) > 15 and len(l.strip()) < 100]
-    topics = lines[:5] if len(lines) >= 5 else lines + ["AI productivity tips"] * (5 - len(lines))
+    # Extract just the bolded topic names (the prompt asks for "**Topic**" as
+    # the first bullet under each numbered item) — a plain length-based line
+    # filter was previously grabbing intro sentences and "🔥 Heat level"
+    # lines instead of actual topic names.
+    import re
+    bolded = re.findall(r"\*\*(.+?)\*\*", trending_text)
+    topics = [t.strip() for t in bolded if 10 < len(t.strip()) < 100][:5]
+
+    if len(topics) < 5:
+        # Fallback to the old heuristic for any remaining slots
+        lines = [l.strip("-•* ").strip() for l in trending_text.split("\n")
+                  if l.strip() and len(l.strip()) > 15 and len(l.strip()) < 100]
+        for l in lines:
+            if len(topics) >= 5:
+                break
+            if l not in topics:
+                topics.append(l)
+
+    if len(topics) < 5:
+        topics += ["AI productivity tips"] * (5 - len(topics))
+
     logger.info(f"📋 Auto-picked topics: {topics}")
     return topics[:5]
 

@@ -302,8 +302,14 @@ def score_linkedin_post(text: str) -> QualityScore:
         warnings.append(f"⚠️  Too short ({char_count} chars) — more dwell time needed")
         sugg.append("💡 Add more value: a story, example, or 2 more bullet points")
     else:
-        length_score = 9
-        warnings.append(f"⚠️  Too long ({char_count} chars) — consider splitting")
+        overflow_ratio = char_count / r["max"]
+        if overflow_ratio > 1.5:
+            length_score = 3
+            failed.append(f"❌ Way too long ({char_count} chars — {overflow_ratio:.1f}x the {r['max']} cap)")
+            sugg.append("💡 Cut to one clear insight — split extra points into a follow-up post")
+        else:
+            length_score = 9
+            warnings.append(f"⚠️  Too long ({char_count} chars) — consider splitting")
     breakdown["Length"] = length_score
 
     # 3. READABILITY / WHITE SPACE (15 pts)
