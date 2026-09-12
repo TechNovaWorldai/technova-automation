@@ -44,7 +44,6 @@ jobs:
           OPENROUTER_API_KEY:        ${{ secrets.OPENROUTER_API_KEY }}
           SUPPRESS_CONFIG_WARNINGS:  "1"
           TOPICS_INPUT:              ${{ github.event.inputs.topics }}
-          MAX_DAYS:                  "1"  # TEMP: quota-conscious single-post test
         run: |
           python automation/weekly_batch.py
 
