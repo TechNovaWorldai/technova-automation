@@ -667,13 +667,19 @@ def check_spam(text: str) -> Dict:
     spam_found = [p for p in SPAM_PATTERNS if p in text_lower]
     fake_found = [p for p in FAKE_ENGAGEMENT_PHRASES if p in text_lower]
 
-    # Repetition check
+    # Repetition check — flag genuine keyword-stuffing, not natural mentions
+    # of the post's own topic/product name (e.g. "ChatGPT" appearing 4-5
+    # times in a ChatGPT-focused post is normal writing, not spam).
     words      = text_lower.split()
+    total_words = max(len(words), 1)
     word_freq  = {}
     for w in words:
         if len(w) > 4:
             word_freq[w] = word_freq.get(w, 0) + 1
-    repeated = {w: c for w, c in word_freq.items() if c >= 4}
+    repeated = {
+        w: c for w, c in word_freq.items()
+        if c >= 6 and (c / total_words) > 0.035
+    }
 
     # Excessive caps
     caps_ratio = sum(1 for c in text if c.isupper()) / max(len(text), 1)
