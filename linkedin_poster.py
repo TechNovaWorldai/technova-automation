@@ -158,14 +158,15 @@ def post_to_linkedin(text: str, image_path: str = None, force_personal: bool = F
     has_company  = bool(cfg.LINKEDIN_ORGANIZATION_ID) and not force_personal
     person_urn   = cfg.LINKEDIN_PERSON_URN
 
-    # Auto-fetch person URN if not set
-    if not person_urn:
+    # Auto-fetch person URN if not set (skip entirely if personal fallback is
+    # disabled — no point fetching a URN we won't use)
+    if not person_urn and cfg.LINKEDIN_FALLBACK_TO_PERSONAL:
         person_urn = _fetch_person_urn()
         if person_urn:
             logger.info(f"✅ Auto-fetched Person URN: {person_urn}")
             cfg.LINKEDIN_PERSON_URN = person_urn
 
-    has_personal = bool(person_urn)
+    has_personal = bool(person_urn) and cfg.LINKEDIN_FALLBACK_TO_PERSONAL
 
     if not has_company and not has_personal:
         return Result.fail(

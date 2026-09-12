@@ -45,7 +45,7 @@ LINKEDIN_ORGANIZATION_ID = _env("LINKEDIN_ORGANIZATION_ID")
 # Personal profile fallback (jab tak company page approval na mile)
 # LINKEDIN_PERSON_URN auto-fetch hoga token se — manually set karna zaroori nahi
 LINKEDIN_PERSON_URN           = _env("LINKEDIN_PERSON_URN")
-LINKEDIN_FALLBACK_TO_PERSONAL = _env("LINKEDIN_FALLBACK_TO_PERSONAL", "true").lower() == "true"
+LINKEDIN_FALLBACK_TO_PERSONAL = _env("LINKEDIN_FALLBACK_TO_PERSONAL", "false").lower() == "true"
 
 # ── TWITTER (optional) ───────────────────────────────────────
 TWITTER_API_KEY              = _env("TWITTER_API_KEY")
