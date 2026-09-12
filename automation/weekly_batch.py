@@ -95,9 +95,14 @@ def main():
     days   = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     topics = get_topics()
 
+    # Optional override for quota-conscious testing — limits how many of
+    # the 5 days actually generate content in a single run.
+    max_days = int(os.environ.get("MAX_DAYS", "5"))
+    day_topic_pairs = list(zip(days, topics))[:max_days]
+
     success_count = 0
 
-    for day, topic in zip(days, topics):
+    for day, topic in day_topic_pairs:
         logger.info(f"\n📅 {day}: '{topic}'")
 
         # LinkedIn — generate + queue for auto-posting

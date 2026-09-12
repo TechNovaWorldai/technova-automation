@@ -42,6 +42,7 @@ GEMINI_MODELS = [
 
 # OpenRouter free models — tried top to bottom if Gemini totally fails
 OPENROUTER_FREE_MODELS = [
+    "mistralai/mistral-small-3.1-24b-instruct:free",
     "meta-llama/llama-3.3-70b-instruct:free",
     "deepseek/deepseek-chat:free",
     "google/gemini-2.0-flash-exp:free",
