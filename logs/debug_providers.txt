@@ -1,3 +1,0 @@
-Provider status: {'gemini/gemini-2.5-flash': False, 'gemini/gemini-2.5-pro': False, 'openrouter/meta-llama/llama-3.3-70b-instruct:free': False}
-
-Test generate(): FAILED: All AI providers failed: gemini-2.5-flash: rate limited | gemini-2.5-pro: Model 'gemini-2.5-pro' not found/deprecated (404) | meta-llama/llama-3.3-70b-instruct:free: rate limited | deepseek/deepseek-chat:free: rate limited | google/gemini-2.0-flash-exp:free: rate limited | openrouter/free: rate limited

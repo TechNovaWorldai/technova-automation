@@ -31,8 +31,13 @@ OPENROUTER_BASE = "https://openrouter.ai/api/v1/chat/completions"
 
 # Order matters — tried top to bottom
 GEMINI_MODELS = [
-    "gemini-2.5-flash",       # primary — fast + free tier
-    "gemini-2.5-pro",          # fallback 1 — higher quality, same key
+    "gemini-2.5-flash",        # primary — fast + free tier
+    "gemini-2.5-flash-lite",   # fallback 1 — same key/project, no new-user block
+    # NOTE: "gemini-2.5-pro" was removed — Google now returns 404
+    # "no longer available to new users" for it on projects/keys with no
+    # prior usage of that specific model (confirmed on this key, Sep 2026).
+    # Google's newer recommended models are the gemini-3.x preview line,
+    # which needs separate access verification before adding here.
 ]
 
 # OpenRouter free models — tried top to bottom if Gemini totally fails
