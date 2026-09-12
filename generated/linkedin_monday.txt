@@ -1,8 +1,8 @@
-What if AI could do your data analysis? Unlock ChatGPT's hidden power.
+ChatGPT isn't just a chatbot anymore — it can now run your data analysis for you.
 
 #ChatGPTPlugins
 
-⚠️ Early adoption often means experimentation, but the gains are real.
+⚠️ Still evolving fast — test it on low-stakes data before trusting it with anything critical.
 
 ChatGPT is no longer just a chatbot; it's rapidly evolving into a versatile platform, especially with the introduction of plugins and advanced features like the Code Interpreter. For anyone learning AI or eyeing a transition into IT/AI careers, understanding these capabilities is crucial.
 
