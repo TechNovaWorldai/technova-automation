@@ -1,0 +1,17 @@
+**News Commentary:** Breaking! Hugging Face just dropped `transformers` v4.36, packed with new quantization features & improved LoRA support. This is HUGE for fine-tuning LLMs on consumer hardware! Are you ready to optimize your models? #AIupdates #MLOps
+
+---
+
+**Hot Takes:** Most people learning AI overlook the massive performance gains from basic data preprocessing. It's not always about bigger models. A clean dataset + thoughtful feature engineering can outperform a complex, unoptimized network every time. Don't skip the...
+
+---
+
+**Question Tweets:** When building your first AI project, do you prioritize model accuracy first, or deployment simplicity? Pick one! 👇 #AIlearning #CareerInAI
+
+---
+
+**List Tweets:** Practical Tip: Stuck on an AI error?
+
+---
+
+Check your data shapes/types.

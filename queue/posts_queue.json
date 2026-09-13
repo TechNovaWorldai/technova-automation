@@ -12,5 +12,57 @@
     "attempts": 1,
     "last_error": "403 Permission denied for company page.\nLikely cause: your OAuth token lacks the required scope (w_member_social for\npersonal posts, rw_organization_social for company page posts).\nFix: regenerate the token with the correct scopes enabled.",
     "updated_at": "2026-09-13T12:38:52.366437"
+  },
+  {
+    "id": 2,
+    "platform": "linkedin",
+    "content": "Struggling to find your niche in AI?\nHere are 8 trending AI topics based on real audience demand at TechNova World:\n\n#AITrends\n\n⚠️ These are observations from the field, not definitive career paths for everyone.\n\nThe AI landscape is evolving rapidly, and staying ahead means understanding what's truly gaining traction. We've been listening to our community at TechNova World, and these are the areas that consistently spark the most interest and discussion.\n\nFrom generative AI pushing creative boundaries to explainable AI addressing critical trust issues, the demand for skills in these domains is skyrocketing. We're seeing a massive push towards practical applications, where AI isn't just a concept but a tool to solve tangible problems. Think about specialized LLMs for niche industries, or AI ethics becoming a core competency rather than an afterthought.\n\nData-centric AI, for instance, focuses on improving the quality of data rather than just the models, a paradigm shift that's proving incredibly effective. Then there's federated learning, addressing privacy concerns while still leveraging distributed data. These aren't just buzzwords; they represent significant shifts in how AI is developed and deployed. Understanding these underlying currents can truly differentiate you in the job market and give you an edge in building impactful solutions.\n\nWhich of these trending AI topics are you most excited to explore further?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers #FutureOfAI",
+    "topic": "Here are 8 trending AI topics for TechNova World, focusing on real audience demand:",
+    "image_path": "",
+    "image_prompt": "A sleek, modern illustration depicting a multifaceted AI landscape. The central focus is a stylized, glowing brain or network node radiating eight distinct, interconnected beams of light, each leading to a unique, abstract visual metaphor representing one of the trending AI topics (e.g., a creative brushstroke for generative AI, a transparent data flow for explainable AI, a secure shield for federated learning). The color palette is a sophisticated blend of deep blues, purples, and electric greens, with subtle metallic accents, conveying innovation and practical application in a tech-editorial style. The overall mood is forward-thinking and empowering, suggesting a pathway to understanding and mastering the evolving AI world.",
+    "schedule_time": "",
+    "added_at": "2026-09-13T17:29:18.628902",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 3,
+    "platform": "linkedin",
+    "content": "What if AI could build itself? The future of LLMs is collaborative agents.\n\n#LLMArchitectures\n\n⚠️ This field is evolving at warp speed — staying updated is key.\n\nThe hype around LLMs is real, but the true game-changer is how we're building *with* them. Forget single-query prompts; we're moving into an era of sophisticated AI agent architectures. Think of it like a team of specialized AI workers, each with a specific role, collaborating to solve complex problems.\n\nTools like AutoGen are letting us orchestrate these multi-agent systems, where different LLMs can communicate, debate, and even self-correct to achieve a goal. It's not just about getting a good answer; it's about building a robust, adaptive problem-solving framework.\n\nLlamaIndex and LangChain are vital for grounding these agents in real-world data and giving them the memory and context they need to perform effectively. They act as the \"nervous system,\" connecting LLMs to external data sources and tools, extending their capabilities far beyond what a standalone model can do.\n\nFor anyone learning AI or looking to pivot into this space, understanding these new architectures is crucial. It's where the innovation is happening, and where the most impactful applications are being built. Moving from basic prompt engineering to designing multi-agent workflows is the next step in mastering AI.\n\nWhat challenges do you foresee in scaling these multi-agent systems?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers #FutureOfAI",
+    "topic": "1.  **Topic:** LLMs & the New AI Agent Architectures (e.g., AutoGen, LlamaIndex, LangChain)",
+    "image_path": "",
+    "image_prompt": "A dynamic, modern tech-editorial image illustrating the concept of collaborative AI agents. Visualize a central, abstract, glowing neural network or brain-like structure at the core, representing an LLM. Surrounding this core, depict multiple smaller, distinct, glowing geometric AI agent icons (e.g., stylized gears, circuit fragments, data nodes) connected by subtle, luminous lines, actively interacting and exchanging data streams. The overall composition should be clean and sophisticated, using a cool color palette of blues, purples, and electric greens against a dark, slightly textured background, conveying a mood of intelligent collaboration and advanced problem-solving.",
+    "schedule_time": "",
+    "added_at": "2026-09-13T17:29:24.265648",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 4,
+    "platform": "linkedin",
+    "content": "5 AI tools that can land you a high‑paying job\nin 30 days\n\n#AICareers\n\n⚠️ Success varies; adapt the advice to your own journey\n\nWhen I first tried building a simple chatbot, I thought I needed dozens of libraries and a PhD.\nInstead, I focused on one core API and let the model handle the heavy lifting.\nThat shift saved me weeks of frustration and taught me the real power of specialization.\nIn AI, depth beats breadth: mastering a single tool or framework often opens doors faster than collecting certificates.\nI spent three months perfecting prompt engineering with a single platform, then leveraged that expertise to land a junior ML engineer role.\nThe key lesson? Identify the smallest viable skill set that solves a real problem, then iterate.\nDon't chase every new library; let the problem dictate the tool.\nThis approach also builds confidence — you see tangible results early, which fuels further learning.\nIf you're transitioning, start with a focused project rather than a broad curriculum.\nRemember, the AI field evolves quickly, so a narrow focus today can become a broader skill set tomorrow.\nDocument your experiments and share them on GitHub; concrete proof of competence often outweighs a fancy degree on a résumé.\nWhen you feel stuck, revisit the basics — clean data, clear prompts, and iterative testing are the true foundations of success.\n\nWhich tool surprised you the most?\n\n#AI #ArtificialIntelligence #CareerTransition #Upskill #TechNovaWorld",
+    "topic": "🔥 Heat level: 🔥🔥🔥",
+    "image_path": "",
+    "image_prompt": "A stylized, glowing, golden key, representing specialized AI expertise, unlocks a futuristic door made of data streams and network nodes, revealing a vibrant, high-tech cityscape in the distance. The composition emphasizes a focused path forward, with the key's intricate details contrasting against the broader, slightly blurred background, all rendered in a clean, modern tech-editorial style with a palette of deep blues, electric purples, and radiant gold. The overall mood is one of focused achievement and confident progression, rather than overwhelming complexity.",
+    "schedule_time": "",
+    "added_at": "2026-09-13T17:33:25.820649",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 5,
+    "platform": "linkedin",
+    "content": "Struggling to land that first AI role?\nYour best tool isn't a coding language, it's already on your phone.\n\n#AICareers\n\n⚠️ This isn't about job applications, it's about building your brand.\n\nMany aspiring AI professionals pour hours into mastering algorithms and frameworks, which is crucial, but often overlook the most powerful platform for career growth: LinkedIn. It's not just a resume repository; it's a dynamic ecosystem for learning, networking, and showcasing your unique journey into AI.\n\nThink about it. Where do industry leaders share insights? Where do recruiters scout talent? Where can you find communities discussing the latest in LLMs or computer vision? It's all here.\n\nLeverage LinkedIn to share your learning journey. Post about a new concept you're exploring, a project you’ve built (even small ones!), or an interesting article you've read. Engage with thought leaders. Comment thoughtfully on posts from AI researchers and tech executives. This isn't just passive consumption; it's active participation that makes you visible.\n\nYour profile isn't just a list of skills; it's your personal narrative. Use the \"About\" section to tell your story – why AI, what drives you, where you want to go. Showcase your certifications, volunteer projects, and even your passion for solving real-world problems with AI. Recruiters aren't just looking for technical skills; they're looking for passionate individuals who fit a team and culture.\n\nBuilding a strong network here isn't about collecting connections. It's about forming genuine relationships, offering value, and seeking mentorship. Attend virtual events, join relevant groups, and don't be afraid to send personalized connection requests with a brief, respectful message. This platform offers unparalleled access to the very people who can open doors to your next opportunity in AI. Stop seeing LinkedIn as a chore and start viewing it as your most strategic AI career tool.\n\nWhat's your experience using LinkedIn for career growth in tech?\n\n#AI #ArtificialIntelligence #CareerTransition #TechNovaWorld",
+    "topic": "Best platform: LinkedIn",
+    "image_path": "",
+    "image_prompt": "A vibrant, modern tech-editorial image showing a diverse individual, likely a young professional, actively engaged with a glowing, intricate network visualized within a smartphone screen held in their hand. The network, composed of interconnected nodes and subtle AI-related icons (like neural network patterns or data streams), extends beyond the phone, subtly enveloping the individual and hinting at a broader ecosystem of learning, connections, and career opportunities. The composition is clean and focused, with a cool, intelligent color palette dominated by blues, purples, and subtle greens, conveying a sense of empowerment and strategic growth in the AI field.",
+    "schedule_time": "",
+    "added_at": "2026-09-13T17:33:32.385146",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
   }
 ]
