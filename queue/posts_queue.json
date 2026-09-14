@@ -22,9 +22,10 @@
     "image_prompt": "A sleek, modern illustration depicting a multifaceted AI landscape. The central focus is a stylized, glowing brain or network node radiating eight distinct, interconnected beams of light, each leading to a unique, abstract visual metaphor representing one of the trending AI topics (e.g., a creative brushstroke for generative AI, a transparent data flow for explainable AI, a secure shield for federated learning). The color palette is a sophisticated blend of deep blues, purples, and electric greens, with subtle metallic accents, conveying innovation and practical application in a tech-editorial style. The overall mood is forward-thinking and empowering, suggesting a pathway to understanding and mastering the evolving AI world.",
     "schedule_time": "",
     "added_at": "2026-09-13T17:29:18.628902",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "403 Permission denied for company page.\nLikely cause: your OAuth token lacks the required scope (w_member_social for\npersonal posts, rw_organization_social for company page posts).\nFix: regenerate the token with the correct scopes enabled.",
+    "updated_at": "2026-09-14T09:12:35.782457"
   },
   {
     "id": 3,
