@@ -36,9 +36,10 @@
     "image_prompt": "A dynamic, modern tech-editorial image illustrating the concept of collaborative AI agents. Visualize a central, abstract, glowing neural network or brain-like structure at the core, representing an LLM. Surrounding this core, depict multiple smaller, distinct, glowing geometric AI agent icons (e.g., stylized gears, circuit fragments, data nodes) connected by subtle, luminous lines, actively interacting and exchanging data streams. The overall composition should be clean and sophisticated, using a cool color palette of blues, purples, and electric greens against a dark, slightly textured background, conveying a mood of intelligent collaboration and advanced problem-solving.",
     "schedule_time": "",
     "added_at": "2026-09-13T17:29:24.265648",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "403 Permission denied for company page.\nLikely cause: your OAuth token lacks the required scope (w_member_social for\npersonal posts, rw_organization_social for company page posts).\nFix: regenerate the token with the correct scopes enabled.",
+    "updated_at": "2026-09-15T08:55:03.700273"
   },
   {
     "id": 4,
