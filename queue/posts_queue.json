@@ -50,9 +50,10 @@
     "image_prompt": "A stylized, glowing, golden key, representing specialized AI expertise, unlocks a futuristic door made of data streams and network nodes, revealing a vibrant, high-tech cityscape in the distance. The composition emphasizes a focused path forward, with the key's intricate details contrasting against the broader, slightly blurred background, all rendered in a clean, modern tech-editorial style with a palette of deep blues, electric purples, and radiant gold. The overall mood is one of focused achievement and confident progression, rather than overwhelming complexity.",
     "schedule_time": "",
     "added_at": "2026-09-13T17:33:25.820649",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "403 Permission denied for company page.\nLikely cause: your OAuth token lacks the required scope (w_member_social for\npersonal posts, rw_organization_social for company page posts).\nFix: regenerate the token with the correct scopes enabled.",
+    "updated_at": "2026-09-16T08:48:02.830796"
   },
   {
     "id": 5,
