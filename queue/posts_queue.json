@@ -78,9 +78,10 @@
     "image_prompt": "A close-up, modern tech-editorial style image showing a human hand gently touching a holographic interface that projects a dynamic, interwoven tapestry of visual, auditory (represented by subtle sound wave patterns), and textual data streams, all converging into a single, glowing, central point. The color palette is clean and sophisticated, dominated by cool blues, purples, and subtle greens, suggesting intelligence and innovation, with a mood of seamless integration and future-forward possibility. The composition emphasizes the effortless flow and unification of diverse information, illustrating the \"omni\" nature of GPT-4o.",
     "schedule_time": "",
     "added_at": "2026-09-20T17:32:51.121364",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-09-21T09:14:38.602909"
   },
   {
     "id": 7,
