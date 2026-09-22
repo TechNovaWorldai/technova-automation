@@ -92,9 +92,10 @@
     "image_prompt": "A close-up, high-angle shot of a sleek, modern smartphone screen, subtly glowing with a vibrant, abstract neural network visualization that appears to be actively processing data directly on the device. The phone is held in a human hand, with the background blurred into a soft focus of everyday environments (e.g., a desk, a cafe table), emphasizing the integration of powerful AI into personal, real-world use. The color palette is dominated by cool blues, purples, and subtle greens, with touches of bright white light emanating from the screen, conveying a sense of advanced technology, privacy, and immediate responsiveness. The overall mood is futuristic, empowering, and subtly intelligent, avoiding any overtly robotic or sci-fi clichés.",
     "schedule_time": "",
     "added_at": "2026-09-20T17:32:57.067785",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-09-22T08:46:03.360585"
   },
   {
     "id": 8,
