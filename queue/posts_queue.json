@@ -106,9 +106,10 @@
     "image_prompt": "A futuristic control room with a large transparent holographic display showing interconnected neural network pathways, where streams of diverse data points flow through beams of light, some paths pulsing red to highlight bias detection zones while others glow blue with explanatory labels. In the foreground, a diverse team of professionals in modern business attire examine floating diagnostic panels that visualize fairness metrics, confidence scores, and compliance checkmarks, all rendered in a sleek chrome and glass environment with a cool-toned color palette of blues, whites, and subtle neon accents. The overall mood is professional and forward-thinking, emphasizing transparency and collaborative oversight in AI development, with clean geometric lines and soft ambient lighting creating a tech-editorial aesthetic that feels both innovative and grounded.",
     "schedule_time": "",
     "added_at": "2026-09-20T17:34:28.763420",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-09-23T08:47:27.515442"
   },
   {
     "id": 9,
