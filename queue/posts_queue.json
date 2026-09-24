@@ -120,8 +120,9 @@
     "image_prompt": "A sleek, modern composition featuring a human software developer, seen from a slightly elevated angle, collaborating seamlessly with an ethereal, glowing AI entity. The developer is focused on a holographic screen displaying clean code, with the AI's translucent, geometric form subtly integrated into the workflow, perhaps as an intelligent overlay or a guiding presence beside the screen, not overshadowing the human. The color palette is dominated by cool blues, purples, and subtle neon accents, conveying a futuristic and innovative tech-editorial mood, emphasizing the \"copilot, not replacement\" idea and the acceleration of development.",
     "schedule_time": "",
     "added_at": "2026-09-20T17:34:42.440393",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-09-24T08:41:55.900027"
   }
 ]
