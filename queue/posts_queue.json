@@ -124,5 +124,70 @@
     "attempts": 1,
     "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
     "updated_at": "2026-09-24T08:41:55.900027"
+  },
+  {
+    "id": 10,
+    "platform": "linkedin",
+    "content": "What if AI could truly understand your workflow?\nUnlock peak productivity with ChatGPT Plugins & Custom Instructions.\n\n#ChatGPTPlugins\n\n⚠️ These tools are evolving fast – staying updated is key.\n\nFor anyone navigating the AI landscape, whether you're learning the ropes or transitioning into an AI career, mastering ChatGPT Plugins and Custom Instructions is a game-changer. Think of plugins as giving ChatGPT superpowers, allowing it to interact with external services, browse the web, or perform complex calculations. This moves it beyond a simple chatbot to a powerful assistant capable of real-world actions.\n\nEven more impactful are Custom Instructions. This feature lets you permanently \"teach\" ChatGPT about your preferences, background, and the specific style or format you need for its responses. Imagine not having to repeatedly tell it your role, industry, or preferred tone. It saves immense time and ensures more consistent, tailored outputs right from the first prompt. It's like having a personal AI assistant that knows you inside out, anticipating your needs and delivering results that truly resonate. This level of customization is crucial for efficiency and developing unique applications, giving you a competitive edge in any AI-driven role.\n\nWhat's your go-to ChatGPT plugin or custom instruction setup?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers",
+    "topic": "ChatGPT Plugins & Custom Instructions",
+    "image_path": "",
+    "image_prompt": "A professional, focused individual (gender-neutral) sits at a sleek desk, interacting with a glowing, holographic interface that visually represents ChatGPT. The interface is dynamically layered, with distinct, subtle icons or modules symbolizing \"plugins\" extending outward and \"custom instructions\" appearing as personalized, flowing data streams, all seamlessly integrated. The composition is clean and modern, using a cool blue and purple tech-editorial color palette, conveying a sense of empowerment, efficiency, and deep personalization in an AI-driven workflow.",
+    "schedule_time": "",
+    "added_at": "2026-09-27T18:33:01.491118",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 11,
+    "platform": "linkedin",
+    "content": "What if AI could handle your most repetitive tasks?\nImagine automating workflows you never thought possible.\n\n#GenerativeAI\n\n⚠️ While powerful, remember responsible implementation is key.\n\nGenerative AI isn't just for creating art or text; it's a game-changer for business automation. For those of you transitioning into AI careers or just starting your learning journey, understanding its practical applications is crucial. Forget manual data entry, report generation, or even basic customer support interactions. We're now seeing GenAI build custom code snippets, personalize marketing campaigns at scale, and even design initial product concepts based on simple prompts.\n\nThis isn't about replacing human ingenuity, but augmenting it. Imagine a sales team where AI drafts personalized follow-up emails, freeing reps to focus on relationship building. Or a development team where AI generates boilerplate code, allowing engineers to tackle complex architectural challenges. The power lies in its ability to understand context and generate relevant, novel outputs, moving beyond rule-based automation. It's about efficiency, scalability, and unlocking new levels of innovation within any enterprise. For anyone learning AI, focusing on how these models can integrate into existing business processes will give you a massive edge.\n\nWhat business task do you think Generative AI will revolutionize next?\n\n#TechNovaWorld #AI #ArtificialIntelligence #Automation #AICareers",
+    "topic": "Generative AI for Business Automation",
+    "image_path": "",
+    "image_prompt": "A sophisticated, multi-ethnic business professional, subtly interacting with a holographic interface that visualizes complex, interconnected business processes – like data flows, code snippets, and personalized marketing campaign elements – all seamlessly automating and optimizing themselves in real-time. The composition should be a close-up on the interaction, emphasizing human augmentation rather than replacement, with a clean, modern, tech-editorial style, using a professional color palette of deep blues, teals, and subtle glowing whites against a soft, blurred office environment. The mood is innovative and empowering, showcasing intelligent efficiency and scalability without being overly futuristic or abstract.",
+    "schedule_time": "",
+    "added_at": "2026-09-27T18:33:06.779749",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 12,
+    "platform": "linkedin",
+    "content": "What if you could turn a general LLM into a specialist?\nUnlock the power of Llama 2 and Mistral for your unique needs.\n\n#LLMFineTuning\n\n⚠️ This isn't just theory; it's a game-changer for practical AI application.\n\nMany of us start our AI journey by interacting with powerful, general-purpose LLMs. They're amazing, but sometimes you need a model that truly understands the nuances of your specific industry, product, or task. That's where fine-tuning open-source models like Llama 2 and Mistral comes in.\n\nImagine you're building a customer service chatbot for a niche e-commerce site. A general LLM might give good answers, but it won't truly grasp your product catalog, return policies, or brand voice without extensive prompting. Fine-tuning allows you to train these robust base models on your proprietary data, making them experts in *your* domain.\n\nThis process involves taking a pre-trained model and further training it on a smaller, highly relevant dataset. The beauty of Llama 2 and Mistral is their accessibility and strong performance, making them ideal candidates for this kind of specialization. You're not building a model from scratch; you're molding an existing intelligence to fit a precise mold.\n\nFor those transitioning into AI or deepening their skills, understanding fine-tuning is crucial. It moves you beyond simply using AI to actively shaping it, opening doors to highly customized and impactful solutions. It’s about making AI work smarter, not just harder, for specific business challenges.\n\nWhat specific task are you most excited to fine-tune an LLM for?\n\n#AI #ArtificialIntelligence #MachineLearning #TechNovaWorld #AICareers",
+    "topic": "Fine-tuning Open-Source LLMs (Llama 2, Mistral) for Specific Tasks",
+    "image_path": "",
+    "image_prompt": "A dynamic, modern tech-editorial image illustrating the transformation of a general LLM into a specialized expert. On one side, a large, glowing, abstract neural network diagram represents a general LLM, radiating a diffuse, multi-colored light. On the other side, a smaller, more focused, crystalline structure emerges from the larger network, emitting a precise, directed beam of light towards a specific, stylized icon representing a niche e-commerce product catalog or a customer service chat bubble. The composition should suggest a molding or refining process, with sleek lines and a clean, cool-toned color palette of blues, purples, and electric greens, conveying a mood of intelligent customization and powerful application rather than broad generalization.",
+    "schedule_time": "",
+    "added_at": "2026-09-27T18:34:57.430344",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 13,
+    "platform": "linkedin",
+    "content": "What if AI could solve humanity's biggest challenges, but at what cost? Responsible development is key.\n\n#AIEthics\n\n⚠️ Ignoring these ethical considerations can lead to devastating real-world consequences.\n\nFor anyone diving into AI, or transitioning into an AI/IT career, understanding AI Ethics isn't just a bonus – it's foundational. We're building the future, and that means ensuring our AI systems are fair, transparent, and respectful of individual rights.\n\nLet's talk data privacy. In an age of massive datasets, protecting user information isn't just a legal requirement; it's a moral imperative. How do we ensure robust anonymization and secure data handling while still advancing innovation?\n\nThen there's bias detection. AI models learn from the data they're fed. If that data reflects existing societal biases, the AI will perpetuate them, potentially leading to discriminatory outcomes in areas like hiring, lending, or even healthcare. Learning to identify and mitigate these biases is a critical skill.\n\nFinally, explainable AI (XAI). Can you articulate *why* your AI made a particular decision? For sensitive applications, \"because the algorithm said so\" isn't good enough. We need systems that can justify their outputs, building trust and allowing for auditing and correction. These aren't just technical hurdles; they're ethical imperatives that demand our attention and innovation.\n\nWhat's your biggest concern when it comes to AI ethics in real-world applications?\n\n#AI #ArtificialIntelligence #ResponsibleAI #TechNovaWorld #AICareers",
+    "topic": "AI Ethics & Responsible AI Development (Data Privacy, Bias Detection, Explainable AI)",
+    "image_path": "",
+    "image_prompt": "A conceptual image illustrating the delicate balance of AI development. In the foreground, a diverse group of people (representing data privacy, bias detection, and explainable AI) are meticulously constructing a glowing, intricate AI brain, composed of interwoven data streams and transparent, interconnected modules, emphasizing fairness and clarity. In the background, a subtle, shadowy \"cost\" looms, hinting at potential societal risks, but the foreground focus is on responsible, ethical construction, rendered in a clean, modern, tech-editorial style with a palette of deep blues, vibrant purples, and illuminating whites.",
+    "schedule_time": "",
+    "added_at": "2026-09-27T18:35:02.786019",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 14,
+    "platform": "linkedin",
+    "content": "What if you could get AI to follow your instructions perfectly—no coding required?\nHere are 3 prompt‑engineering tricks anyone can use.\n\n#PromptEngineering\n\n⚠️ These tips work best with current LLMs; results may vary across models.\n\nWhen I first started experimenting with AI chatbots, I treated them like a search engine—typing short keywords and hoping for magic. The answers were vague, off‑topic, or just plain wrong. I realized the model wasn’t guessing my intent; it was waiting for clear direction.\n\nThat shift in mindset was the first prompt‑engineering lesson: give the AI a specific role and context. Instead of “Tell me about marketing,” I began with “You are a senior marketing strategist with 10 years of experience in B2B SaaS. Outline a three‑month launch plan for a new analytics tool.” The responses became detailed, relevant, and surprisingly creative.\n\nI also discovered the power of iterative refinement. My first prompt rarely delivered exactly what I needed. But by asking follow-up questions, providing feedback like \"make it more concise\" or \"focus on the target audience in Europe,\" I could guide the AI to a much better outcome. It's less about getting it right the first time and more about being a good editor. Think of it as a conversation, not a command.\n\nWhich prompt‑engineering tip are you going to try first?\n\n#AI #ArtificialIntelligence #PromptTips #AIBeginners #LearnAI",
+    "topic": "Prompt Engineering Best Practices for Non-Developers",
+    "image_path": "",
+    "image_prompt": "A diverse group of non-technical professionals, ranging from a marketing specialist to a project manager, are actively engaged in a collaborative, modern office space. They are gathered around a sleek, transparent holographic interface displaying evolving, well-structured text and data, which they are interactively refining and guiding with hand gestures, symbolizing the iterative process of prompt engineering and the shift from vague commands to specific, collaborative interaction with AI. The scene is bathed in a cool, professional color palette with subtle tech-inspired glows, conveying a mood of empowered productivity and accessible innovation.",
+    "schedule_time": "",
+    "added_at": "2026-09-27T18:35:41.330733",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
   }
 ]
