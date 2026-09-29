@@ -148,9 +148,10 @@
     "image_prompt": "A sophisticated, multi-ethnic business professional, subtly interacting with a holographic interface that visualizes complex, interconnected business processes – like data flows, code snippets, and personalized marketing campaign elements – all seamlessly automating and optimizing themselves in real-time. The composition should be a close-up on the interaction, emphasizing human augmentation rather than replacement, with a clean, modern, tech-editorial style, using a professional color palette of deep blues, teals, and subtle glowing whites against a soft, blurred office environment. The mood is innovative and empowering, showcasing intelligent efficiency and scalability without being overly futuristic or abstract.",
     "schedule_time": "",
     "added_at": "2026-09-27T18:33:06.779749",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-09-29T10:04:31.862923"
   },
   {
     "id": 12,
