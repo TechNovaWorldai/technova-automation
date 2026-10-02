@@ -190,8 +190,9 @@
     "image_prompt": "A diverse group of non-technical professionals, ranging from a marketing specialist to a project manager, are actively engaged in a collaborative, modern office space. They are gathered around a sleek, transparent holographic interface displaying evolving, well-structured text and data, which they are interactively refining and guiding with hand gestures, symbolizing the iterative process of prompt engineering and the shift from vague commands to specific, collaborative interaction with AI. The scene is bathed in a cool, professional color palette with subtle tech-inspired glows, conveying a mood of empowered productivity and accessible innovation.",
     "schedule_time": "",
     "added_at": "2026-09-27T18:35:41.330733",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-02T10:00:01.460327"
   }
 ]
