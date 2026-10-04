@@ -1,17 +1,17 @@
-**news_commentary**
+**news_commentary:** New EU AI Act just passed! This isn't just policy; it's a blueprint for ethical AI development. For those building or learning AI, understanding these regulations is crucial for future-proofing your skills. #ResponsibleAI #AIEthics
 
 ---
 
-**hot_takes**
+**hot_takes:** Most people don't realize ethical AI isn't just about avoiding harm, it's about *proactively designing for fairness and transparency*. It's a competitive advantage, not just a compliance hurdle. #EthicalAI #AIDevelopment
 
 ---
 
-**question_tweets**
+**question_tweets:** When developing AI, which is your bigger concern: algorithmic bias or data privacy? Both are critical, but which keeps you up at night more? Let us know! 👇 #AIethics #AskAI
 
 ---
 
-**list_tweets**
+**list_tweets:**
 
 ---
 
-Start with a small, clean dataset.
+Define ethical guidelines *before* coding.

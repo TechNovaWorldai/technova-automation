@@ -194,5 +194,57 @@
     "attempts": 1,
     "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
     "updated_at": "2026-10-02T10:00:01.460327"
+  },
+  {
+    "id": 15,
+    "platform": "linkedin",
+    "content": "What if AI could build tools for you?\nChatGPT Plugins & Custom GPTs are making it happen.\n\n#GPTDevelopment\n\n⚠️ The landscape is evolving fast, so continuous learning is key.\n\nThe world of AI is moving beyond simply prompting. We're now entering an era where you can extend ChatGPT's capabilities with plugins and even build your own specialized AI agents with Custom GPTs. This isn't just a niche for advanced developers anymore; it's a game-changer for anyone looking to transition into AI or enhance their IT career.\n\nImagine creating a GPT that acts as your personal data analyst, summarizing complex reports and identifying key trends. Or a plugin that connects ChatGPT directly to your project management software, automating task creation and updates. These tools are democratizing AI development, allowing those with less coding experience to build powerful solutions.\n\nFor those learning AI, understanding how to leverage these features is becoming as crucial as mastering prompt engineering. It's about moving from being a consumer of AI to a creator. This skill set will be highly valued as businesses increasingly seek tailored AI solutions to streamline operations and drive innovation. Don't just observe the AI revolution – be a part of shaping it.\n\nWhat Custom GPT or plugin idea are you most excited to build?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers",
+    "topic": "ChatGPT Plugins & Custom GPTs",
+    "image_path": "",
+    "image_prompt": "A sophisticated, clean, and modern tech-editorial image. The central focus is a human hand (diverse, not gender-specific) reaching out to connect or assemble various abstract, glowing digital components – representing \"plugins\" and \"Custom GPTs\" – that are seamlessly integrating into a larger, more complete, but still abstract, crystalline structure of artificial intelligence. The composition implies building, empowerment, and accessibility, with a harmonious color palette of deep blues, purples, and subtle luminous whites, set against a softly blurred, futuristic background suggesting a digital workspace or data flow.",
+    "schedule_time": "",
+    "added_at": "2026-10-04T18:14:36.241016",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 16,
+    "platform": "linkedin",
+    "content": "What if AI could run on your phone, offline? The future of powerful AI is getting personal.\n\n#LocalLLMs\n\n⚠️ Performance varies greatly depending on device and model.\n\nThe buzz around large language models (LLMs) has been incredible, but many envision AI as a remote, cloud-dependent entity. That's rapidly changing with the rise of local LLMs and on-device AI. Imagine running sophisticated models like Llama 2, Mistral, or even Google Gemini Nano directly on your laptop or smartphone, without an internet connection.\n\nThis shift isn't just a technical marvel; it's a game-changer for privacy, accessibility, and new application development. For those learning AI or transitioning into the field, understanding these local deployments is becoming crucial. It opens doors to building AI-powered apps that respect user data, operate in remote areas, or provide instant, low-latency responses.\n\nThink about the possibilities: a personal AI assistant that knows your context without sending data to the cloud, or an industrial AI vision system that makes real-time decisions on-site. The tools and techniques for fine-tuning and deploying these models are evolving quickly, making it an exciting area to specialize in. It's no longer just about training massive models, but also about efficiently running them where they're needed most.\n\nWhat's the most exciting application you can imagine for on-device AI?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers",
+    "topic": "Local LLMs & On-Device AI (e.g., Llama 2, Mistral, Google Gemini Nano)",
+    "image_path": "",
+    "image_prompt": "A close-up, modern tech-editorial image showing a human hand (diverse skin tone) holding a sleek, contemporary smartphone. The phone screen displays abstract, flowing light patterns and subtle, glowing neural network-like connections emanating from within the device, suggesting complex AI processing happening locally. The background is a soft, out-of-focus blend of muted tech blues and purples, hinting at a broader digital environment without being distracting, emphasizing the \"on-device\" aspect and a sense of privacy and personalization. The overall mood is sophisticated, forward-thinking, and empowering.",
+    "schedule_time": "",
+    "added_at": "2026-10-04T18:14:42.123224",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 17,
+    "platform": "linkedin",
+    "content": "AI isn't just code; it's a moral compass.\nAre we steering it right?\n\n#ResponsibleAI\n\n⚠️ The future of AI hinges on our choices today.\n\nAs you dive into the exciting world of AI, whether you're learning your first lines of Python for machine learning or refining complex neural networks, remember the immense power you're wielding. The algorithms we design, the data we use to train them, and the applications we deploy all carry significant ethical implications. It's not enough to build intelligent systems; we must build them responsibly.\n\nConsider the potential for bias in datasets, leading to unfair outcomes in hiring, lending, or even healthcare. Think about the need for transparency in decision-making, so users understand why an AI made a particular recommendation. Data privacy, accountability for errors, and the societal impact of automation are not just academic discussions; they are real-world challenges that future AI professionals like you will face daily. Developing a strong ethical framework alongside your technical skills is paramount. It ensures that the innovations we create truly serve humanity and foster a more equitable, just, and safe future. TechNova World believes in empowering you not just with skills, but with a conscience.\n\nWhat ethical consideration do you think is most overlooked in current AI development?\n\n#AI #ArtificialIntelligence #EthicalAI #AIDevelopment #TechNovaWorld",
+    "topic": "Responsible AI & Ethical AI Development",
+    "image_path": "",
+    "image_prompt": "A sophisticated, abstract visual representing a moral compass integrated into a subtle, glowing neural network. The composition should feature a delicate balance between a guiding needle pointing towards a brighter, ethical future and the intricate, interconnected nodes of AI, rendered in a clean, modern tech-editorial style with a deep blue and soft gold color palette, evoking a sense of responsibility and thoughtful innovation.",
+    "schedule_time": "",
+    "added_at": "2026-10-04T18:15:51.068350",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 18,
+    "platform": "linkedin",
+    "content": "What if AI could build itself?\nAutonomous AI agents are changing everything.\n\n#AIAgents\n\n⚠️ Early days, but the potential is immense for efficiency gains.\n\nThe buzz around AI agents like Auto-GPT and GPT-Engineer isn't just hype; it's a glimpse into the future of autonomous workflows. Imagine an AI that can not only understand a complex task but also break it down, research solutions, write code, debug itself, and even deploy the final product – all with minimal human oversight.\n\nFor those learning AI or transitioning into tech, understanding these autonomous systems is no longer optional, it's essential. These agents are moving beyond simple prompt responses to become proactive problem-solvers. They represent a paradigm shift in how we approach development and innovation.\n\nThink about the implications for productivity. Developers could focus on higher-level architectural challenges while AI agents handle the iterative coding and testing. For businesses, this means faster development cycles and the ability to tackle more ambitious projects with existing resources.\n\nThis isn't just about using AI as a tool; it's about AI becoming an active participant in the creation process. Embracing these concepts now will put you at the forefront of the next wave of AI innovation.\n\nWhat's the most surprising application you've seen for AI agents so far?\n\n#AI #ArtificialIntelligence #TechNovaWorld #FutureofAI #AICareers",
+    "topic": "AI Agents & Autonomous AI Workflows (e.g., Auto-GPT, GPT-Engineer)",
+    "image_path": "",
+    "image_prompt": "A sleek, stylized robotic hand, rendered with a subtle glow of data streams, is shown in the act of constructing a smaller, intricate robotic arm from a series of luminous digital blocks and circuits. The composition is clean and modern, set against a dark, minimalist background with a vibrant, yet refined, tech-blue and purple color palette, evoking a sense of forward-thinking innovation and self-creation, not just simple automation. The overall mood is sophisticated and slightly futuristic, emphasizing the AI's proactive role in development rather than just tool usage.",
+    "schedule_time": "",
+    "added_at": "2026-10-04T18:15:56.626189",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
   }
 ]
