@@ -204,9 +204,10 @@
     "image_prompt": "A sophisticated, clean, and modern tech-editorial image. The central focus is a human hand (diverse, not gender-specific) reaching out to connect or assemble various abstract, glowing digital components – representing \"plugins\" and \"Custom GPTs\" – that are seamlessly integrating into a larger, more complete, but still abstract, crystalline structure of artificial intelligence. The composition implies building, empowerment, and accessibility, with a harmonious color palette of deep blues, purples, and subtle luminous whites, set against a softly blurred, futuristic background suggesting a digital workspace or data flow.",
     "schedule_time": "",
     "added_at": "2026-10-04T18:14:36.241016",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-05T10:47:02.812866"
   },
   {
     "id": 16,
