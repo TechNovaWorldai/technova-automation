@@ -218,9 +218,10 @@
     "image_prompt": "A close-up, modern tech-editorial image showing a human hand (diverse skin tone) holding a sleek, contemporary smartphone. The phone screen displays abstract, flowing light patterns and subtle, glowing neural network-like connections emanating from within the device, suggesting complex AI processing happening locally. The background is a soft, out-of-focus blend of muted tech blues and purples, hinting at a broader digital environment without being distracting, emphasizing the \"on-device\" aspect and a sense of privacy and personalization. The overall mood is sophisticated, forward-thinking, and empowering.",
     "schedule_time": "",
     "added_at": "2026-10-04T18:14:42.123224",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-06T10:41:37.347807"
   },
   {
     "id": 17,
