@@ -232,9 +232,10 @@
     "image_prompt": "A sophisticated, abstract visual representing a moral compass integrated into a subtle, glowing neural network. The composition should feature a delicate balance between a guiding needle pointing towards a brighter, ethical future and the intricate, interconnected nodes of AI, rendered in a clean, modern tech-editorial style with a deep blue and soft gold color palette, evoking a sense of responsibility and thoughtful innovation.",
     "schedule_time": "",
     "added_at": "2026-10-04T18:15:51.068350",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-07T10:31:00.180450"
   },
   {
     "id": 18,
