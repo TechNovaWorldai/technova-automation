@@ -246,8 +246,9 @@
     "image_prompt": "A sleek, stylized robotic hand, rendered with a subtle glow of data streams, is shown in the act of constructing a smaller, intricate robotic arm from a series of luminous digital blocks and circuits. The composition is clean and modern, set against a dark, minimalist background with a vibrant, yet refined, tech-blue and purple color palette, evoking a sense of forward-thinking innovation and self-creation, not just simple automation. The overall mood is sophisticated and slightly futuristic, emphasizing the AI's proactive role in development rather than just tool usage.",
     "schedule_time": "",
     "added_at": "2026-10-04T18:15:56.626189",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-08T10:52:07.662256"
   }
 ]
