@@ -260,9 +260,10 @@
     "image_prompt": "A sophisticated, close-up human face, slightly translucent and rendered with subtle digital lines, is gently overlaid with abstract, glowing data visualizations representing audio waveforms, facial recognition points, and flowing text. The composition should suggest a seamless integration of human emotion and digital understanding, with a clean, modern tech-editorial aesthetic and a cool-toned color palette of deep blues, purples, and ethereal greens, conveying a mood of intelligent progress and subtle introspection rather than overt futurism. The overall impression is one of AI interpreting and responding to the full spectrum of human communication beyond just words.",
     "schedule_time": "",
     "added_at": "2026-10-11T19:03:59.337983",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-12T11:15:11.085229"
   },
   {
     "id": 20,
