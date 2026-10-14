@@ -288,9 +288,10 @@
     "image_prompt": "A sophisticated, multi-layered visual representing the \"black box\" of AI being transparently revealed. On the left, a subtle, abstract representation of a complex, opaque AI system (e.g., intertwined neural network lines in a darker, muted blue). On the right, this system opens up, with key decision points or data pathways illuminated and clearly visible, perhaps using glowing lines or translucent panels in brighter, data-visualization greens and yellows, symbolizing explainability and bias detection. A gentle, guiding hand or a subtle human silhouette could be reaching towards this transparent side, signifying human oversight and ethical integration, all within a clean, modern, tech-editorial style with a serious yet optimistic mood.",
     "schedule_time": "",
     "added_at": "2026-10-11T19:05:03.779128",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-14T08:58:29.874656"
   },
   {
     "id": 22,
