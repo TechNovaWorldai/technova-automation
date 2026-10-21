@@ -344,9 +344,10 @@
     "image_prompt": "A high-angle, futuristic office scene where a human professional, looking thoughtful and strategic, observes a holographic projection. This projection displays a complex, interconnected network of digital tasks and sub-tasks being autonomously managed and executed by glowing, abstract AI \"agents\" represented as dynamic, self-organizing data streams or light forms. The overall color palette is cool blues, purples, and greens, with subtle warm highlights, conveying a sense of intelligent efficiency and a shift from micro-management to strategic oversight in a modern, tech-editorial style.",
     "schedule_time": "",
     "added_at": "2026-10-18T17:29:03.124810",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-21T08:49:13.481488"
   },
   {
     "id": 26,
