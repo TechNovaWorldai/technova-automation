@@ -358,8 +358,9 @@
     "image_prompt": "A sleek, modern illustration depicts a complex, multi-layered \"thought process\" within a glowing, abstract AI brain. Instead of simple connections, intricate, branching pathways and iterative feedback loops are visualized with glowing lines and subtle energy flows, suggesting advanced reasoning and self-correction. The color palette is sophisticated, with deep blues, purples, and electric greens, set against a clean, dark background, conveying a sense of intellectual depth and cutting-edge technology. The overall mood is intelligent, forward-thinking, and precise, emphasizing the engineering of AI's internal logic rather than just its output.",
     "schedule_time": "",
     "added_at": "2026-10-18T17:29:16.493789",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-22T08:52:02.142874"
   }
 ]
