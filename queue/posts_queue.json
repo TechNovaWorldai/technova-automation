@@ -372,9 +372,10 @@
     "image_prompt": "A close-up, modern tech-editorial image illustrating the seamless integration of human interaction with AI. A stylized, translucent human hand is gently touching or gesturing towards a dynamic, glowing holographic interface that subtly depicts a blend of abstract waveform patterns (representing voice), subtle eye-like or camera lens elements (representing vision), and flowing text characters. The composition should be clean and minimalist, with a cool, sophisticated color palette of deep blues, purples, and electric greens, conveying a sense of intuitive, real-time understanding between human and machine.",
     "schedule_time": "",
     "added_at": "2026-10-25T17:43:18.488913",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-26T09:17:26.665989"
   },
   {
     "id": 28,
