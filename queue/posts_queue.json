@@ -386,9 +386,10 @@
     "image_prompt": "A diverse group of individuals (developers, researchers, students) of various ages and backgrounds are gathered around a central, glowing, open-source AI model represented as an intricate, transparent 3D neural network structure. The composition is dynamic, showing hands reaching out to interact with the model, with some figures actively coding on laptops or discussing ideas, while others observe intently. The color palette features cool blues, purples, and greens, with warm amber accents emanating from the AI model, creating a sense of accessibility and empowerment. The overall mood is modern, collaborative, and forward-thinking, capturing the \"leveling the playing field\" aspect of open-source AI, with a clean, tech-editorial style.",
     "schedule_time": "",
     "added_at": "2026-10-25T17:43:36.269889",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-27T09:17:04.546421"
   },
   {
     "id": 29,
