@@ -400,9 +400,10 @@
     "image_prompt": "A clean, modern, tech-editorial illustration depicting a complex, glowing neural network (representing an LLM) at the center. From the left, a stream of generic, unhelpful data flows towards it, but a \"librarian\" figure (represented by a stylized, abstract data retrieval mechanism, perhaps a glowing hand or a sophisticated scanner) stands between the LLM and the incoming data, expertly sifting through a vast, organized library of enterprise documents and databases. This librarian figure then feeds specific, highlighted, and relevant data directly into the LLM, resulting in a clear, accurate, and tailored answer emanating from the LLM on the right, all within a cool blue and subtle green color palette.",
     "schedule_time": "",
     "added_at": "2026-10-25T17:44:46.625561",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-10-28T09:57:46.145936"
   },
   {
     "id": 30,
