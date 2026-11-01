@@ -418,5 +418,31 @@
     "attempts": 1,
     "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
     "updated_at": "2026-10-29T10:20:16.019958"
+  },
+  {
+    "id": 31,
+    "platform": "linkedin",
+    "content": "Struggling with ChatGPT? You're not alone.\nMany beginners make these common blunders.\n\n#ChatGPTTips\n\n⚠️ These are the patterns I've observed countless times in new users.\n\nWhen you first start using ChatGPT, it's easy to get frustrated. I often see people treat it like a search engine, asking broad questions and expecting perfect, concise answers. This usually leads to generic outputs that don't help much, making them think ChatGPT isn't powerful.\n\nAnother big mistake is not iterating. They'll ask a question, get an answer, and either accept it or give up. The real power of ChatGPT comes from refinement. Think of it as a conversation. If the first response isn't quite right, tell it what you need changed, clarify your intent, or even provide examples. \"Make it more concise,\" \"Focus on marketing strategies,\" or \"Give me three bullet points on X\" are great starting points.\n\nAlso, many beginners don't understand the importance of context. The more background you provide, the better the output. Don't just ask \"Write an email.\" Instead, say \"Write a professional email to a client named Sarah, introducing our new AI-powered project management tool. Highlight its efficiency gains and offer a demo. My company is TechNova World.\" Specificity is your best friend here. It's a tool that amplifies your instructions, not replaces them.\n\nWhat's one common mistake you made early on with ChatGPT?\n\n#AI #ArtificialIntelligence #TechNovaWorld #AICareers #LearnAI",
+    "topic": "Common mistakes beginners make with ChatGPT",
+    "image_path": "",
+    "image_prompt": "",
+    "schedule_time": "",
+    "added_at": "2026-11-01T19:03:19.247982",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
+  },
+  {
+    "id": 32,
+    "platform": "linkedin",
+    "content": "What AI skills are companies truly seeking today?\nStop chasing every new tool – focus on these instead.\n\n#AICareers\n\n⚠️ These are observations from current job market trends, not a definitive guide.\n\nThe landscape of AI roles is evolving rapidly, but a few core competencies consistently stand out. Companies aren't just looking for prompt engineers; they need professionals who can bridge the gap between AI capabilities and business problems. Think beyond simply using pre-built models.\n\nData literacy is paramount. Understanding data cleaning, feature engineering, and ethical data practices forms the bedrock of any successful AI initiative. You can't build good models on bad data. Equally important is a strong grasp of machine learning fundamentals – not just knowing how to run a library, but understanding why certain algorithms work best for specific problems, and how to interpret their outputs.\n\nAnother critical skill is MLOps (Machine Learning Operations). Deploying, monitoring, and maintaining AI models in production environments is a complex task. Companies need individuals who can ensure models are scalable, reliable, and perform as expected over time. This often involves cloud platforms, version control, and automation tools. Finally, the ability to communicate complex AI concepts to non-technical stakeholders is often overlooked but incredibly valuable. Being able to explain the \"what\" and \"why\" of an AI solution to a business team can make or break a project.\n\nWhich of these skills do you find most challenging to master?\n\n#AI #ArtificialIntelligence #TechNovaWorld #CareerDevelopment #FutureOfWork",
+    "topic": "What AI skills are companies hiring for now",
+    "image_path": "",
+    "image_prompt": "A modern, tech-editorial illustration depicting a stylized, intricate bridge forming connections between various abstract, glowing data points and a simplified, sleek skyscraper representing business solutions. The bridge itself is composed of interconnected, geometric shapes symbolizing MLOps pipelines and clean data streams, with subtle visual cues for data literacy and machine learning fundamentals integrated into its structure. The color palette should be cool and professional, featuring deep blues, subtle greens, and glowing white accents, conveying a mood of strategic clarity and advanced problem-solving, without any embedded text.",
+    "schedule_time": "",
+    "added_at": "2026-11-01T19:03:49.723125",
+    "status": "pending",
+    "attempts": 0,
+    "last_error": ""
   }
 ]
