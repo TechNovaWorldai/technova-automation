@@ -456,9 +456,10 @@
     "image_prompt": "A diverse group of professionals (one speaking, one gesturing towards a screen, one intently observing) in a modern, collaborative tech workspace are seamlessly interacting with a holographic, translucent interface that displays a dynamic blend of real-time speech-to-text transcription, evolving 3D data visualizations, and expressive human faces. The composition is a medium shot, highlighting the fluid, simultaneous exchange between humans and the sophisticated AI interface, rendered in a cool, professional color palette of blues, greens, and subtle grays with glowing interface elements. The mood is one of focused innovation and intuitive, natural human-AI synergy, reflecting a clean, tech-editorial style without any clutter.",
     "schedule_time": "",
     "added_at": "2026-11-08T18:55:17.315717",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-09T11:59:16.833393"
   },
   {
     "id": 34,
