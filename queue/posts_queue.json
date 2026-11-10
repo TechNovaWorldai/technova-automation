@@ -470,9 +470,10 @@
     "image_prompt": "A close-up, modern tech-editorial image featuring a sleek smartphone and a laptop, both subtly glowing with abstract, interconnected neural network patterns emanating from their screens, suggesting on-device processing. The composition should emphasize the devices as self-contained units, with no visible external cloud or internet connections, set against a clean, minimalist background in a cool blue and silver color palette. The overall mood should be innovative and empowering, highlighting the future of ubiquitous, private AI directly in users' hands.",
     "schedule_time": "",
     "added_at": "2026-11-08T18:55:22.669009",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-10T11:36:47.459322"
   },
   {
     "id": 35,
