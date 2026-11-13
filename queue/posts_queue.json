@@ -512,8 +512,9 @@
     "image_prompt": "A clean, modern, tech-editorial illustration depicting a complex, multi-layered architectural diagram. At the core, an abstract, glowing \"brain\" representing an LLM is connected via subtle, flowing data pathways to a central, robust \"vault\" or \"library\" that visually represents a vector database (e.g., stylized as a cluster of interconnected data cylinders or crystalline structures). This central vault is actively retrieving and filtering information (represented by small, precise data packets or glowing cubes) from a vast, diverse \"enterprise data cloud\" in the background, then feeding it to the LLM, which in turn generates clear, accurate insights. The color palette should be sophisticated, using cool blues, purples, and greens with pops of bright, intelligent light to convey clarity, precision, and advanced technology.",
     "schedule_time": "",
     "added_at": "2026-11-08T18:56:28.167784",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-13T11:26:07.349650"
   }
 ]
