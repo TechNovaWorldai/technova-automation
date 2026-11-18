@@ -554,9 +554,10 @@
     "image_prompt": "A futuristic, clean tech-editorial image showing a human hand reaching out, with subtle energy lines emanating from its fingertips, connecting to a dynamic, multi-faceted digital sphere. Within the sphere, a seamless blend of abstract elements representing text, evolving into a photorealistic landscape, then further transforming into a short, fluid video sequence (like a subtle ripple or motion blur effect), all rendered in a sophisticated palette of deep blues, electric purples, and luminous teals against a muted, almost glowing background. The composition should convey innovation, seamless transformation, and the tangible impact of multimodal AI, with a mood that is both visionary and grounded in technological advancement.",
     "schedule_time": "",
     "added_at": "2026-11-15T19:53:23.447726",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-18T12:07:00.084132"
   },
   {
     "id": 41,
