@@ -568,8 +568,9 @@
     "image_prompt": "A minimalist, clean, and modern tech-editorial image. The central subject is a stylized, translucent 3D neural network, subtly glowing with cool blues and greens, representing the intricate nature of AI. Emerging from the network, instead of pure data streams, are abstract, symbolic representations of ethical considerations: a finely balanced scale signifying fairness and bias mitigation, a magnifying glass hovering over complex data patterns for explainability, and a subtle, interconnected grid structure for governance. The composition is balanced and forward-looking, with a slightly upward angle, conveying a sense of progress and thoughtful construction, set against a soft, gradient background of deep blues fading to subtle grays, emphasizing clarity and accountability.",
     "schedule_time": "",
     "added_at": "2026-11-15T19:53:42.880306",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-19T12:01:22.847438"
   }
 ]
