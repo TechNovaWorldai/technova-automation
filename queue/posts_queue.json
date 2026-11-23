@@ -582,9 +582,10 @@
     "image_prompt": "A diverse group of professionals (e.g., a customer service agent, a teacher, a developer) in a modern, collaborative office environment, interacting seamlessly with subtle, glowing holographic interfaces that represent real-time AI assistance. The interfaces show integrated streams of visual (e.g., a student's handwritten notes), auditory (represented by subtle sound waves), and textual information, converging into a single, intuitive AI response. The color palette is cool and professional, with blues, purples, and subtle whites, conveying a mood of innovation and effortless collaboration, emphasizing the low-latency, human-like interaction of multimodal AI.",
     "schedule_time": "",
     "added_at": "2026-11-22T20:46:19.926525",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-23T13:31:21.491329"
   },
   {
     "id": 43,
