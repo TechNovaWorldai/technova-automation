@@ -596,9 +596,10 @@
     "image_prompt": "A close-up, high-angle shot of a sleek, modern smartphone screen, displaying a subtly glowing, intricate neural network graphic that appears to be \"running\" directly within the phone's interface. Surrounding the phone, but slightly out of focus, are faint, glowing lines emanating from everyday objects like a smart home speaker, a small industrial sensor, and a smartwatch, symbolizing localized intelligence rather than a distant cloud. The color palette is cool and sophisticated, with deep blues, purples, and subtle electric greens, conveying a sense of advanced, on-device processing. The mood is forward-thinking and empowering, highlighting the tangible presence of AI in personal devices and specialized applications.",
     "schedule_time": "",
     "added_at": "2026-11-22T20:46:25.226564",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-24T14:09:47.783585"
   },
   {
     "id": 44,
