@@ -610,9 +610,10 @@
     "image_prompt": "A visually striking, modern tech-editorial image illustrating the concept of making AI transparent and fair. The central element is a sophisticated, abstract representation of an AI model, initially appearing as a complex, glowing \"black box\" but with clear, illuminated pathways and transparent layers emerging from it, revealing logical connections and decision-making processes. A subtle, digital hand gestures towards the transparent pathways, symbolizing human guidance and oversight in ensuring fairness and explainability, all set against a clean, slightly desaturated background with a color palette of deep blues, subtle greens, and cool whites, emphasizing clarity and trust.",
     "schedule_time": "",
     "added_at": "2026-11-22T20:47:03.731257",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-25T13:22:21.623332"
   },
   {
     "id": 45,
