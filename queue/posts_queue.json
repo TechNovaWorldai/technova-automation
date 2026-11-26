@@ -624,8 +624,9 @@
     "image_prompt": "A diverse software developer, focused and engaged, collaborates with a holographic, glowing AI assistant projected from their modern laptop. The AI assistant visually manifests as interconnected lines of code and abstract data patterns, subtly guiding the developer's hands on the keyboard, symbolizing augmentation rather than replacement. The composition is clean and modern, set in a well-lit, minimalist workspace, using a palette of deep blues, purples, and electric greens to convey innovation and a forward-thinking, tech-editorial mood.",
     "schedule_time": "",
     "added_at": "2026-11-22T20:47:26.560053",
-    "status": "pending",
-    "attempts": 0,
-    "last_error": ""
+    "status": "failed",
+    "attempts": 1,
+    "last_error": "401 Unauthorized: LinkedIn token has expired.\nFix: go to https://developer.linkedin.com/tools/oauth, generate a new token,\nthen update LINKEDIN_ACCESS_TOKEN in your GitHub Secrets or .env file.",
+    "updated_at": "2026-11-26T13:01:20.654368"
   }
 ]
